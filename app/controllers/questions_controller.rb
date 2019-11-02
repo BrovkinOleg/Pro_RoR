@@ -10,21 +10,25 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def new
-    @question = Question.new(title: '123', body: '123')
+    @question = Question.new#(title: '123', body: '123')
   end
 
   def create
-    @question = Question.new
-    if @question
-      render new_question_path
+    @question = Question.new(question_params)
+    if @question.save
+      redirect_to @question
     else
-      render edit_question_path
+      render :new
     end
   end
-end
 
   private
+
+  def question_params
+    params.require(:question).permit(:title, :body)
+  end
 
   def load_question
     @question = Question.find(params[:id])
   end
+end
