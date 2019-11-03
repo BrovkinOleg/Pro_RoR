@@ -1,0 +1,15 @@
+= render 'shared/errors', resource: @question
+h2 New Question
+
+= form_with model: @question do |f|
+  table
+    tr
+      td = f.label :title
+      td = f.text_field :title
+    tr
+      td = f.label :body
+      td = f.text_area :body
+    tr
+      td = ''
+      td = f.submit 'Submit'
+p = render 'shared/footer'

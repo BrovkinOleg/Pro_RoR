@@ -1,20 +1,19 @@
-doctype html
-html
-  head
-    title project name qna
+= render 'shared/errors', resource: @question
 
-  body
-    h1 List of questions
+h1 List of questions
+- unless @questions.empty?
+  table
+    tr
+      th = 'id'
+      th = 'title'
+      th = 'body'
+    - for item in @questions do
+      tr
+        td = item.id
+        td = item.title
+        td = item.body
+- else
+    p No items found
 
-    - unless @questions.empty?
-      table
-        - for item in @questions do
-          tr
-            td = item.title
-            td = item.body
-    - else
-      p No items found
-
-    #footer
-      br
-      | Copyright © 2019 Brovkin Oleg
+p = link_to 'New Question', new_question_path
+p = render 'shared/footer'
