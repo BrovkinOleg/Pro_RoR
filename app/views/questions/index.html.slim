@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title project name qna
+
+  body
+    h1 List of questions
+
+    - unless @questions.empty?
+      table
+        - for item in @questions do
+          tr
+            td = item.title
+            td = item.body
+    - else
+      p No items found
+
+    #footer
+      br
+      | Copyright © 2019 Brovkin Oleg
