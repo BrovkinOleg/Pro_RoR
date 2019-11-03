@@ -28,4 +28,15 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'GET #new' do
+    before { get :new }
+
+    it 'assign a new Answer to @answer' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+    it 'render show new' do
+      expect(response).to render_template :new
+    end
+  end
 end
