@@ -6,9 +6,7 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show
-    @answer = Answer.new
-  end
+  def show; end
 
   def edit; end
 
@@ -17,11 +15,12 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    # @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      render :new
+      render :new, notice: 'You must fill all fields.'
     end
   end
 
@@ -34,7 +33,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
+    if @question.user_id == current_user.id
+      @question.destroy
+      flash[:notice] = 'You question successfully deleted.'
+    else
+      flash[:notice] = 'You cant delete this question.'
+    end
     redirect_to questions_path
   end
 
