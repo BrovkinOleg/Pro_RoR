@@ -37,7 +37,7 @@ class QuestionsController < ApplicationController
       @question.destroy
       flash[:notice] = 'You question successfully deleted.'
     else
-      flash[:notice] = 'You cant delete this question.'
+      flash[:notice] = 'You can not delete this question.'
     end
     redirect_to questions_path
   end

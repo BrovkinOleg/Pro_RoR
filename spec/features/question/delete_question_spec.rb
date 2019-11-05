@@ -7,7 +7,7 @@ feature 'Delete question' do
   given(:question) { create :question, user: user}
 
   scenario 'authorized user can delete his question' do
-    log_in(user)
+    sign_in(user)
     question
     visit question_path(question)
     click_on 'Delete question'
@@ -17,7 +17,7 @@ feature 'Delete question' do
   end
 
   scenario 'authorized user cant delete not his question' do
-    log_in(another_user)
+    sign_in(another_user)
     visit question_path(question)
     expect(page).to have_no_content 'Delete question'
   end
