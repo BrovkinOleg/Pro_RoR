@@ -1,19 +1,14 @@
 = render 'shared/errors', resource: @question
 
-h1 List of questions
-- unless @questions.empty?
-  table
-    tr
-      th = 'id'
-      th = 'title'
-      th = 'body'
-    - for item in @questions do
-      tr
-        td = item.id
-        td = item.title
-        td = item.body
-- else
-    p No items found
+- if user_signed_in?
+  p = link_to 'Ask question', new_question_path
+  p = link_to 'Sign out', destroy_user_session_path, method: :delete
+-else
+  = link_to 'Sign in', new_user_session_path
 
-p = link_to 'Ask question', new_question_path
+br
+- @questions.each do |question|
+  a href="/questions/#{question.id}" = question.title
+br
+
 p = render 'shared/footer'
