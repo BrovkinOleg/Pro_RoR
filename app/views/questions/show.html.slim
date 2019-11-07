@@ -1,18 +1,26 @@
+= render 'shared/errors', local: true, resource: @question
+
 h2= @question.title
+p = @question.body
 - if current_user && @question.user_id == current_user.id
-  small= link_to 'Delete question', question_path, method: :delete
+  = link_to 'Delete question', question_path, method: :delete
+hr
+h3 Answers
+- @question.answers.each do |answer|
+  = answer.body
+  - if user_signed_in? && answer.user_id == current_user.id
+    p= link_to 'Delete answer', question_answers_path(@question) + "/#{answer.id}", method: :delete
 
-p= @question.body
+- if user_signed_in?
+  = form_for [@question, @question.answers.new], remote: true do |f|
+    = f.text_area :body
+    = f.label :body, 'Add your answer'
+    p = f.submit 'Create'
 
-h4 Answers
-.answer
-  - @question.answers.each do |answer|
-    p= answer.body
-    - if current_user && answer.user_id == current_user.id
-      small= link_to 'Delete answer', question_answers_path(@question) + "/#{answer.id}", method: :delete
-  hr
-
-- if current_user
-  small= link_to 'Create answer', "/questions/#{ @question.id }/answers/new"
 - else
-| Sign in or sign up to leave answers
+  | Sign_in or Sign_up if you want to leave an answer
+
+p = link_to 'Back', root_path
+p = render 'shared/footer', local: true
+
+

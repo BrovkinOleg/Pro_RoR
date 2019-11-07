@@ -11,8 +11,7 @@ feature 'Create answer', %q{
     sign_in(user)
     visit root_path
     click_on question.title
-    click_on 'Create answer'
-    fill_in 'Answer', with: 'test answer'
+    fill_in 'Add your answer', with: 'test answer'
     click_on 'Create'
 
     expect(page).to have_content 'Your answer successfully created.'
@@ -24,12 +23,11 @@ feature 'Create answer', %q{
     sign_in(user)
     visit root_path
     click_on question.title
-    click_on 'Create answer'
-    fill_in 'Answer', with: ''
+    fill_in 'Add your answer', with: ''
     click_on 'Create'
 
-    expect(page).to have_content 'Answer cant be blank.'
-    expect(current_path).to eq question_answers_path(question)
+    expect(page).to have_content 'Answer field can not be blank.'
+    expect(current_path).to eq question_path(question)
   end
 
   scenario 'Non-authenticated user tries to create answer' do

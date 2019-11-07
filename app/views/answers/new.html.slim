@@ -1,4 +1,6 @@
 = form_for [@answer.question, @answer], local: true do |f|
-  = f.label :body, 'Answer'
-  = f.text_area :body
-  = f.submit 'Create'
+  p = f.label :body, 'Answer'
+  p = f.text_area :body
+  p = f.submit 'Create'
+
+p = render 'shared/footer', local: true

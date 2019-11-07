@@ -7,9 +7,9 @@ p = link_to 'Ask question', new_question_path
 -else
   p = link_to 'Sign in', new_user_session_path
 
-br
+hr
 - @questions.each do |question|
+  p
   a href="/questions/#{question.id}" = question.title
-br
 
 p = render 'shared/footer', local: true
