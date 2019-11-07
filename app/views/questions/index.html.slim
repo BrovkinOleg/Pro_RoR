@@ -1,4 +1,4 @@
-= render 'shared/errors', resource: @question
+= render 'shared/errors', local: true, resource: @question
 
 p = link_to 'Ask question', new_question_path
 
@@ -12,4 +12,4 @@ br
   a href="/questions/#{question.id}" = question.title
 br
 
-p = render 'shared/footer'
+p = render 'shared/footer', local: true
