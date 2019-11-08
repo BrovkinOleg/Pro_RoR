@@ -140,6 +140,7 @@ RSpec.describe QuestionsController, type: :controller do
 
           expect(question.title).to eq 'new title'
           expect(question.body).to eq 'new body'
+          expect(question.user_id).to eq user.id
         end
 
         it 'redirects to updated question' do

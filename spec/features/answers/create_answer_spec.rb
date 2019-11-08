@@ -27,7 +27,7 @@ feature 'Create answer', %q{
       click_on 'Create'
 
       expect(page).to have_content 'Answer field can not be blank.'
-      expect(current_path).to eq question_path(question)
+      expect(current_path).to eq question_answers_path(question)
     end
   end
 
