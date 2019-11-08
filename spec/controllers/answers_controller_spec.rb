@@ -4,9 +4,10 @@ RSpec.describe AnswersController, type: :controller do
 
   let(:user) { create :user }
   let(:question) { create :question, user: user }
-  before { sign_in(user) }
+  # before { sign_in(user) }
 
   describe 'POST #create' do
+    before { sign_in(user) }
     context 'with valid attributes' do
       it 'saves the new answer to database' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to \
@@ -33,6 +34,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    before { sign_in(user) }
     before { get :new, params: { question_id: question } }
 
     it 'assign a new Answer to @answer' do

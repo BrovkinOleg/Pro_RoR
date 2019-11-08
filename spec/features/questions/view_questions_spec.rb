@@ -8,17 +8,13 @@ feature 'View questions' do
 
   scenario 'user can view questions' do
     sign_in(user)
-    visit root_path
-    click_on question.title
-
+    visit question_path(question)
     expect(page).to have_content question.title
     expect(page).to have_content question.body
   end
 
   scenario 'user can view answers' do
-    visit root_path
-    click_on question.title
-
+    visit question_path(question)
     expect(page).to have_content answer.body
   end
 end
