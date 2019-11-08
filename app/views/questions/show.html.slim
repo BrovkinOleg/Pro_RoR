@@ -15,7 +15,7 @@ h3 Answers
   = form_for [@question, @question.answers.new], remote: true do |f|
     = f.text_area :body
     = f.label :body, 'Add your answer'
-    p = f.submit 'Create'
+    p = f.submit 'Create answer'
 
 - else
   | Sign_in or Sign_up if you want to leave an answer

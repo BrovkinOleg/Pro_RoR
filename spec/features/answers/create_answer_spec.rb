@@ -7,33 +7,34 @@ feature 'Create answer', %q{
   given(:user) { create :user }
   given!(:question) { create :question, user: user }
 
-  scenario 'Authenticated user tries create answer with valid attr'  do
-    sign_in(user)
-    visit root_path
-    click_on question.title
-    fill_in 'Add your answer', with: 'test answer'
-    click_on 'Create'
+  describe 'Authenticated user tries create answer' do
+    background do
+      sign_in(user)
+      visit question_path(question)
+    end
 
-    expect(page).to have_content 'Your answer successfully created.'
-    expect(page).to have_content 'test answer'
-    expect(current_path).to eq question_path(question)
-  end
+    scenario 'with valid attr'  do
+      fill_in 'Add your answer', with: 'test answer'
+      click_on 'Create'
 
-  scenario 'Authenticated user tries create answer with not-valid attr'  do
-    sign_in(user)
-    visit root_path
-    click_on question.title
-    fill_in 'Add your answer', with: ''
-    click_on 'Create'
+      expect(page).to have_content 'Your answer successfully created.'
+      expect(page).to have_content 'test answer'
+      expect(current_path).to eq question_path(question)
+    end
 
-    expect(page).to have_content 'Answer field can not be blank.'
-    expect(current_path).to eq question_path(question)
+    scenario 'with not-valid attr'  do
+      fill_in 'Add your answer', with: ''
+      click_on 'Create'
+
+      expect(page).to have_content 'Answer field can not be blank.'
+      expect(current_path).to eq question_path(question)
+    end
   end
 
   scenario 'Non-authenticated user tries to create answer' do
-    visit root_path
-    click_on question.title
+    visit question_path(question)
 
-    expect(page).to have_no_content 'Create answer'
+    expect(page).to have_no_button 'Create answer'
+    expect(page).to have_content 'Sign_in or Sign_up if you want to leave an answer'
   end
 end
