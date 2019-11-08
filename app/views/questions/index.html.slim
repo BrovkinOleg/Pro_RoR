@@ -9,9 +9,5 @@ p = link_to 'Ask question', new_question_path
 
 hr
 - @questions.each do |question|
-  p
-  a href="/questions/#{question.id}" = question.title
-
+  p = link_to question.title, question_path(question)
 p = render 'shared/footer', local: true
-
-/ = render @questions
