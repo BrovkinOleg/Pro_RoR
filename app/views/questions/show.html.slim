@@ -12,10 +12,7 @@ h3 Answers
     p= link_to 'Delete answer', question_answers_path(@question) + "/#{answer.id}", method: :delete
 
 - if user_signed_in?
-  = form_for [@question, @question.answers.new], remote: true do |f|
-    = f.text_area :body
-    = f.label :body, 'Add your answer'
-    p = f.submit 'Create answer'
+  = render 'questions/form'
 
 - else
   | Sign_in or Sign_up if you want to leave an answer
