@@ -2,10 +2,7 @@
 
 p = link_to 'Ask question', new_question_path
 
-- if user_signed_in?
-  p = link_to 'Sign out', destroy_user_session_path, method: :delete
--else
-  p = link_to 'Sign in', new_user_session_path
+p = render 'shared/signed.html.slim', local: true
 
 hr
 - @questions.each do |question|

@@ -1,8 +1,5 @@
 require 'rails_helper'
 
-  WRONG_EMAIL = 'wrong@test.com'
-  WRONG_PASS = '11111111'
-
 feature 'User can sign in', %q{
   In order to ask questions
   As an unauthenticated user
@@ -23,7 +20,7 @@ feature 'User can sign in', %q{
     end
 
     scenario 'right password and wrong email' do
-      fill_in 'Email', with: WRONG_EMAIL
+      fill_in 'Email', with: 'wrong@test.com'
       fill_in 'Password', with: user.password
       click_on 'Log in'
 
@@ -31,8 +28,8 @@ feature 'User can sign in', %q{
     end
 
     scenario 'wrong password and wrong email' do
-      fill_in 'Email', with: WRONG_EMAIL
-      fill_in 'Password', with: WRONG_PASS
+      fill_in 'Email', with: 'wrong@test.com'
+      fill_in 'Password', with: 'wrong_password'
       click_on 'Log in'
 
       expect(page).to have_content 'Invalid Email or password.'
@@ -40,7 +37,7 @@ feature 'User can sign in', %q{
   end
 
   scenario 'Unregistered user tries to sign in' do
-    fill_in 'Email', with: WRONG_EMAIL
+    fill_in 'Email', with: 'wrong@test.com'
     fill_in 'Password', with: user.password
     click_on 'Log in'
 
