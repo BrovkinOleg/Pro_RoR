@@ -10,8 +10,9 @@ feature 'Delete Answer' do
   scenario 'author delete his answer' do
     sign_in(user)
     visit question_path(question)
-    expect(page).to have_content 'MyText'
+    expect(page).to have_content 'AnswerText'
     click_on 'Delete answer'
+    expect(page).to have_no_content 'AnswerText'
     expect(page).to have_content 'Answer successfully deleted.'
   end
 
