@@ -5,74 +5,42 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question) { create :question, user: user }
   let(:questions) { create_list(:question, 3, user: user) }
 
-  describe 'Unregistered user' do
-    describe 'GET #index' do
+  describe 'GET #index' do
+    describe 'Unregistered user' do
       before { get :index }
-
       it 'populates an array of all questions' do
         expect(assigns(:questions)).to match_array(questions)
       end
-
       it 'renders index view' do
         expect(response).to render_template :index
       end
     end
 
-    describe 'GET #show' do
-      before { get :show, params: {id: question} }
+    describe 'Registered user' do
+      before { sign_in(user) }
+      before { get :index }
+      it 'populates an array of all questions' do
+        expect(assigns(:questions)).to match_array(questions)
+      end
+      it 'renders index view' do
+        expect(response).to render_template :index
+      end
+    end
+  end
 
+  describe 'GET #show' do
+    describe 'Unregistered user' do
+      before { get :show, params: {id: question} }
       it 'Assigns a requested question to @question' do
         expect(assigns(:question)).to eq question
       end
-
       it 'render show view' do
         expect(response).to render_template :show
       end
     end
 
-    describe 'author try DELETE #destroy' do
-      let!(:question) { create :question, user: user }
-
-      it 'not deletes the question' do
-        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
-      end
-
-      it 'redirects to sign_in' do
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to new_user_session_path
-      end
-    end
-
-    describe 'not author try DELETE #destroy' do
-      let(:not_author) { create :user }
-      before { sign_in(not_author) }
-      let!(:question) { create :question, user: user }
-
-      it 'deletes the question' do
-        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
-      end
-
-      it 'redirects to index' do
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
-      end
-    end
-  end
-
-  describe 'Registered user' do
-    before { sign_in(user) }
-    describe 'GET #index' do
-      before { get :index }
-
-      it 'populates an array of all questions' do
-        expect(assigns(:questions)).to match_array(questions)
-      end
-      it 'renders index view' do
-        expect(response).to render_template :index
-      end
-    end
-
-    describe 'GET #show' do
+    describe 'Registered user' do
+      before { sign_in(user) }
       before { get :show, params: { id: question } }
 
       it 'assign requested question to @question' do
@@ -82,8 +50,49 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :show
       end
     end
+  end
 
-    describe 'GET #new' do
+  describe 'DELETE #destroy' do
+    describe 'Unregistered user' do
+      let!(:question) { create :question, user: user }
+      it 'not deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+      it 'redirects to sign_in' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      describe 'not author' do
+        let(:not_author) { create :user }
+        before { sign_in(not_author) }
+        let!(:question) { create :question, user: user }
+        it 'try deletes the question' do
+          expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+        end
+        it 'redirects to index' do
+          delete :destroy, params: { id: question }
+          expect(response).to redirect_to questions_path
+        end
+      end
+    end
+
+    describe 'Registered user' do
+      before { sign_in(user) }
+      let!(:question) { create :question, user: user }
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+  end
+
+  describe 'GET #new' do
+    describe 'Registered user' do
+      before { sign_in(user) }
       before { get :new }
 
       it 'assigns a new Question to @question' do
@@ -93,8 +102,11 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :new
       end
     end
+  end
 
-    describe 'GET #edit' do
+  describe 'GET #edit' do
+    describe 'Registered user' do
+      before { sign_in(user) }
       before { get :edit, params: { id: question } }
 
       it 'assign requested question to @question' do
@@ -104,8 +116,11 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :edit
       end
     end
+  end
 
-    describe 'POST #create' do
+  describe 'POST #create' do
+    describe 'Registered user' do
+      before { sign_in(user) }
       context 'with valid attributes' do
         it 'save a new question to database' do
           expect { post :create, params: { question: attributes_for(:question) } }.to \
@@ -126,8 +141,11 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
     end
+  end
 
-    describe 'PATCH #update' do
+  describe 'PATCH #update' do
+    describe 'Registered user' do
+      before { sign_in(user) }
       context 'with valid attributes' do
         it 'assigns the requested question to @question' do
           patch :update, params: { id: question, question: attributes_for(:question) }
@@ -161,19 +179,6 @@ RSpec.describe QuestionsController, type: :controller do
         it 're-renders edit view' do
           expect(response).to render_template :edit
         end
-      end
-    end
-
-    describe 'author try DELETE #destroy' do
-      let!(:question) { create :question, user: user }
-
-      it 'deletes the question' do
-        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
-      end
-
-      it 'redirects to index' do
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
       end
     end
   end

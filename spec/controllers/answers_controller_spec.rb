@@ -5,9 +5,9 @@ RSpec.describe AnswersController, type: :controller do
   let(:user) { create :user }
   let(:question) { create :question, user: user }
 
-  describe 'Registered user' do
-    before { sign_in(user) }
-    describe 'POST #create' do
+  describe 'POST #create' do
+    context 'Registered user' do
+      before { sign_in(user) }
       context 'with valid attributes' do
         it 'saves the new answer to database' do
           expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to \
@@ -32,8 +32,11 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
     end
+  end
 
-    describe 'GET #new' do
+  describe 'GET #new' do
+    context 'Registered user' do
+      before { sign_in(user) }
       before { get :new, params: { question_id: question } }
 
       it 'assign a new Answer to @answer' do
@@ -45,11 +48,11 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'Unregistered user' do
-    describe 'try GET #new' do
+  describe 'GET #new' do
+    context 'Unregistered user' do
       before { get :new, params: { question_id: question } }
 
-      it 'and redirect to sign_in page' do
+      it 'redirect to sign_in page' do
         expect(response).to redirect_to new_user_session_path
       end
     end
