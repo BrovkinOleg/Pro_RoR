@@ -6,4 +6,8 @@ class User < ApplicationRecord
 
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
+
+  def user_check_id?(object)
+    self.id == object.user_id
+  end
 end
