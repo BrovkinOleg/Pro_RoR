@@ -154,6 +154,29 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    describe 'Unregistered user' do
+      it 'redirect to new user session path' do
+        patch :update, params: { id: question, question: attributes_for(:question) }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    describe 'Registered not author' do
+      let(:not_author) { create :user }
+      before { sign_in(not_author) }
+      it 'changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        question.reload
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
+        expect(question.user).to_not eq not_author
+      end
+      it 'redirect to question_path' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        expect(response).to redirect_to question
+      end
+    end
+
     describe 'Registered user' do
       before { sign_in(user) }
       context 'with valid attributes' do
@@ -186,8 +209,9 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.body).to eq 'MyText'
         end
 
-        it 're-renders edit view' do
-          expect(response).to render_template :edit
+        it 'render edit view' do
+          # expect(response).to render_template :edit
+          expect(response).to redirect_to question
         end
       end
     end
