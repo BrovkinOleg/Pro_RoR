@@ -141,6 +141,16 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
     end
+
+    describe 'Unregistered user' do
+      it 'does not save question' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
+      end
+      it 'redirect to new user session path' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
   end
 
   describe 'PATCH #update' do
@@ -158,7 +168,7 @@ RSpec.describe QuestionsController, type: :controller do
 
           expect(question.title).to eq 'new title'
           expect(question.body).to eq 'new body'
-          expect(question.user_id).to eq user.id
+          expect(question.user).to eq user
         end
 
         it 'redirects to updated question' do
