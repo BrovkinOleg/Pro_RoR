@@ -3,13 +3,12 @@
 h2= @question.title
 p = @question.body
 
-- if current_user && current_user.check_id?(@question)
+- if current_user&.author?(@question)
   = link_to 'Delete question', question_path, method: :delete
 
 hr
 h3 Answers
-- if user_signed_in? && current_user.check_id?(@question)
-= render partial: 'questions/answer', collection: @question.answers
+= render @question.answers
 
 - if user_signed_in?
   = render 'questions/form'

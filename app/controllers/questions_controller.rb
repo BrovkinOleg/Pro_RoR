@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.check_id?(@question)
+    if current_user.author?(@question)
       @question.destroy
       flash[:notice] = 'You question successfully deleted.'
     else
