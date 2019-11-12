@@ -12,9 +12,8 @@ feature 'View question' do
     visit question_path(question)
     expect(page).to have_content question.title
     expect(page).to have_content question.body
-
-    expect(page).to have_content "text_1"
-    expect(page).to have_content "text_2"
-    expect(page).to have_content "text_3"
+    expect(page).to have_content answer_01.body
+    expect(page).to have_content answer_02.body
+    expect(page).to have_content answer_03.body
   end
 end

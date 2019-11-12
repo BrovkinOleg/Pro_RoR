@@ -9,6 +9,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'Registered user' do
       before { sign_in(user) }
       context 'with valid attributes' do
+
         it 'saves the new answer to database' do
           expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to \
           change(question.answers, :count).by(1)
@@ -17,18 +18,21 @@ RSpec.describe AnswersController, type: :controller do
         it 'redirect to the questions#index' do
           post :create, params: { answer: attributes_for(:answer), question_id: question }
           expect(response).to redirect_to assigns(:question)
+          expect(flash[:notice]).to eq 'Your answer successfully created.'
         end
       end
 
       context 'with invalid attributes' do
+
         it 'does not save the question' do
           expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not \
           change(Answer, :count)
         end
 
-        it 'renders new_answer template' do
+        it 'redirect to questions#index' do
           post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-          expect(response).to render_template :new
+          expect(response).to redirect_to assigns(:question)
+          expect(flash[:notice]).to eq 'Answer field can not be blank.'
         end
       end
     end
@@ -42,6 +46,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'assign a new Answer to @answer' do
         expect(assigns(:answer)).to be_a_new(Answer)
       end
+
       it 'render show new' do
         expect(response).to render_template :new
       end

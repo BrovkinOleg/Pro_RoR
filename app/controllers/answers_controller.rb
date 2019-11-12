@@ -12,8 +12,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully created.'
     else
-      flash[:notice] = 'Answer field can not be blank.'
-      render :new
+      redirect_to @question, notice: 'Answer field can not be blank.'
     end
   end
 
