@@ -23,15 +23,16 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'with invalid attributes' do
+      let!(:answers) { create_list(:answer, 2, body: 'text', question: question, user: user) }
 
         it 'does not save the question' do
           expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not \
           change(Answer, :count)
         end
 
-        it 'redirect to questions#index' do
+        it 'renders answers/_answer.html.slim and send notice message' do
           post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-          expect(response).to redirect_to assigns(:question)
+          expect(response).to render_template 'answers/_answer'
           expect(flash[:notice]).to eq 'Answer field can not be blank.'
         end
       end

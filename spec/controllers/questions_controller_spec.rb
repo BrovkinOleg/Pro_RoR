@@ -227,7 +227,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.body).to eq 'MyText'
         end
 
-        it 'render edit view' do
+        it 'redirect_to question' do
 
           expect(response).to redirect_to question
         end
