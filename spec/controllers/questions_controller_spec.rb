@@ -6,7 +6,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:questions) { create_list(:question, 3, user: user) }
 
   describe 'GET #index' do
-    describe 'Unregistered user' do
+    context 'Unregistered user' do
       before { get :index }
       it 'populates an array of all questions' do
         expect(assigns(:questions)).to match_array(questions)
@@ -16,7 +16,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       before { get :index }
       it 'populates an array of all questions' do
@@ -29,7 +29,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    describe 'Unregistered user' do
+    context 'Unregistered user' do
       before { get :show, params: {id: question} }
       it 'Assigns a requested question to @question' do
         expect(assigns(:question)).to eq question
@@ -39,7 +39,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       before { get :show, params: { id: question } }
 
@@ -53,7 +53,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    describe 'Unregistered user' do
+    context 'Unregistered user' do
       let!(:question) { create :question, user: user }
       it 'not deletes the question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
@@ -63,24 +63,23 @@ RSpec.describe QuestionsController, type: :controller do
         delete :destroy, params: { id: question }
         expect(response).to redirect_to new_user_session_path
       end
+    end
+    context 'Registered not author' do
+      let(:not_author) { create :user }
+      before { sign_in(not_author) }
+      let!(:question) { create :question, user: user }
 
-      describe 'not author' do
-        let(:not_author) { create :user }
-        before { sign_in(not_author) }
-        let!(:question) { create :question, user: user }
+      it 'try deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
 
-        it 'try deletes the question' do
-          expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
-        end
-
-        it 'redirects to index' do
-          delete :destroy, params: { id: question }
-          expect(response).to redirect_to questions_path
-        end
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
       end
     end
 
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       let!(:question) { create :question, user: user }
 
@@ -96,7 +95,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       before { get :new }
 
@@ -111,7 +110,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       before { get :edit, params: { id: question } }
 
@@ -126,7 +125,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       context 'with valid attributes' do
 
@@ -154,7 +153,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    describe 'Unregistered user' do
+    context 'Unregistered user' do
 
       it 'does not save question' do
         expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
@@ -168,7 +167,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    describe 'Unregistered user' do
+    context 'Unregistered user' do
 
       it 'redirect to new user session path' do
         patch :update, params: { id: question, question: attributes_for(:question) }
@@ -176,7 +175,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    describe 'Registered not author' do
+    context 'Registered not author' do
       let(:not_author) { create :user }
       before { sign_in(not_author) }
 
@@ -194,7 +193,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    describe 'Registered user' do
+    context 'Registered user' do
       before { sign_in(user) }
       context 'with valid attributes' do
 

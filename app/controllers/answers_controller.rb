@@ -12,19 +12,22 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully created.'
     else
-      redirect_to @question, notice: 'Answer field can not be blank.'
+      flash[:notice] = 'Answer field can not be blank.'
+      render @question.answers
     end
   end
 
   def edit; end
 
-  def update
-    if @answer.update(answer_params)
-      redirect_to @answer.question
-    else
-      render :edit
-    end
-  end
+  # def update
+  #   if current_user.author?(@answer)
+  #     if @answer.update(answer_params)
+  #       redirect_to @answer.question
+  #     else
+  #       render :edit
+  #     end
+  #   end
+  # end
 
   def destroy
     if current_user.author?(@answer)
