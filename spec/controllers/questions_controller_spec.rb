@@ -64,6 +64,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to new_user_session_path
       end
     end
+
     context 'Registered not author' do
       let(:not_author) { create :user }
       before { sign_in(not_author) }
@@ -79,9 +80,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'Registered user' do
-      before { sign_in(user) }
-      let!(:question) { create :question, user: user }
+    context 'Registered author' do
+      let(:author) { create :user }
+      before { sign_in(author) }
+      let!(:question) { create :question, user: author }
 
       it 'deletes the question' do
         expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
@@ -169,10 +171,19 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     context 'Unregistered user' do
 
+      it 'not changes attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        question.reload
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+        expect(question.user).to eq user
+      end
+
       it 'redirect to new user session path' do
         patch :update, params: { id: question, question: attributes_for(:question) }
         expect(response).to redirect_to new_user_session_path
       end
+
     end
 
     context 'Registered not author' do

@@ -19,7 +19,8 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      render :new, notice: 'You must fill all fields.'
+      flash[:notice] = "You must fill all fields."
+      render :new
     end
   end
 

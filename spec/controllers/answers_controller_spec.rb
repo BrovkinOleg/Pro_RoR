@@ -32,7 +32,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders answers/_answer.html.slim and send notice message' do
           post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-          expect(response).to render_template 'answers/_answer'
+          expect(response).to redirect_to assigns(:question)
           expect(flash[:notice]).to eq 'Answer field can not be blank.'
         end
       end
