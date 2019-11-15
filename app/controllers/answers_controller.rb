@@ -10,11 +10,11 @@ class AnswersController < ApplicationController
   def create
     @answer = current_user.answers.new(answer_params.merge(question: @question))
     if @answer.save
-      flash[:notice] = 'Your answer successfully created.'
+      redirect_to @question, notice: 'Your answer successfully created.'
     else
       flash[:notice] = 'Answer field can not be blank.'
+      render 'questions/show'
     end
-    render 'questions/show'
   end
 
   def edit; end

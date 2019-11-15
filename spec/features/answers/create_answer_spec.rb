@@ -19,7 +19,7 @@ feature 'Create answer', %q{
 
       expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'test answer'
-      expect(current_path).to eq question_answers_path(question)
+      expect(current_path).to eq question_path(question)
     end
 
     scenario 'with not-valid attr'  do

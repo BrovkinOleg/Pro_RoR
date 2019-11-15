@@ -30,7 +30,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'redirect to the questions#index' do
           post :create, params: { answer: attributes_for(:answer), question_id: question }
-          expect(response).to render_template 'questions/show'
+          expect(response).to redirect_to(question_path(question))
           expect(flash[:notice]).to eq 'Your answer successfully created.'
         end
       end
