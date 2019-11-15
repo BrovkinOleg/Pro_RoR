@@ -10,7 +10,8 @@ feature 'View question' do
     visit question_path(question)
     expect(page).to have_content question.title
     expect(page).to have_content question.body
-    expect(page).to have_content answers[0].body
-    expect(page).to have_content answers[1].body
+    answers.each do |answer|
+      expect(page).to have_content answer.body
+    end
   end
 end

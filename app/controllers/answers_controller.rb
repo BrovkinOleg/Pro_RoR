@@ -10,39 +10,24 @@ class AnswersController < ApplicationController
   def create
     @answer = current_user.answers.new(answer_params.merge(question: @question))
     if @answer.save
-      flash[:notice] = 'Your answer successfully created.'
+      redirect_to @question, notice: 'Your answer successfully created.'
     else
       flash[:notice] = 'Answer field can not be blank.'
-      end
-    redirect_to @question
+      render 'questions/show'
+    end
   end
 
   def edit; end
 
-  # def update
-  #   if current_user.author?(@answer)
-  #     if @answer.update(answer_params)
-  #       redirect_to @answer.question
-  #     else
-  #       render :edit
-  #     end
-  #   end
-  # end
-
   def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-      flash[:notice] = 'Answer successfully deleted.'
-    else
-      flash[:notice] = 'You can not delete this question.'
-    end
-    redirect_to @answer.question
+    @answer.destroy if current_user.author?(@answer)
+    redirect_to @answer.question, notice: 'Answer successfully deleted.'
   end
 
   private
 
   def load_question
-    @question = Question.find(params[:question_id])
+    @question ||= Question.find(params[:question_id])
   end
 
   def load_answer

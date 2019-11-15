@@ -6,6 +6,19 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create :question, user: user }
 
   describe 'POST #create' do
+    context 'Unregistered user' do
+
+      it 'does not create answer' do
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to_not \
+          change(question.answers, :count)
+      end
+
+      it 'redirects to login page' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question }
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
     context 'Registered user' do
       before { sign_in(user) }
       context 'with valid attributes' do
@@ -32,7 +45,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders answers/_answer.html.slim and send notice message' do
           post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-          expect(response).to redirect_to assigns(:question)
+          expect(response).to render_template 'questions/show'
           expect(flash[:notice]).to eq 'Answer field can not be blank.'
         end
       end
