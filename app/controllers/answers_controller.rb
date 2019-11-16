@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
       redirect_to @question, notice: 'Your answer successfully created.'
     else
       flash[:notice] = 'Answer field can not be blank.'
-      render 'questions/show'
+      # render 'questions/show'
     end
   end
 
