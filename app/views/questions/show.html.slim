@@ -5,15 +5,13 @@ p = @question.body
 
 - if current_user&.author?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
-
 hr
-h3 Answers
 .answers
   = render @question.answers
 
 .answer-errors
- = render 'shared/errors', resource: @answer
-
+  = render 'shared/errors', resource: @answer
+hr
 - if user_signed_in?
   = render 'questions/form'
 
@@ -22,5 +20,3 @@ h3 Answers
 
 p = link_to 'Back', root_path
 p = render 'shared/footer', local: true
-
-

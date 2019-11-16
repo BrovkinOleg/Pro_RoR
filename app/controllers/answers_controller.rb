@@ -8,12 +8,12 @@ class AnswersController < ApplicationController
   end
 
   def create
-    # @answer = current_user.answers.new(answer_params.merge(question: @question))
     @answer = current_user.answers.create(answer_params.merge(question: @question))
+  end
 
-    # if @answer.save
-    #   redirect_to @question, notice: 'Your answer successfully created.'
-    # end
+  def update
+    @answer.update(answer_params) if current_user.author?(@answer)
+    @question = @answer.question  # @question будет доступен в update.js.erb
   end
 
   def edit; end
