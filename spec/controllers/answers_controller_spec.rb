@@ -24,14 +24,13 @@ RSpec.describe AnswersController, type: :controller do
       context 'with valid attributes' do
 
         it 'saves the new answer to database' do
-          expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to \
+          expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to \
           change(question.answers, :count).by(1)
         end
 
-        it 'redirect to the questions#index' do
-          post :create, params: { answer: attributes_for(:answer), question_id: question }
-          expect(response).to redirect_to(question_path(question))
-          expect(flash[:notice]).to eq 'Your answer successfully created.'
+        it 'renders template :create' do
+          post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js
+          expect(response).to render_template :create
         end
       end
 
@@ -39,14 +38,13 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answers) { create_list(:answer, 2, body: 'text', question: question, user: user) }
 
         it 'does not save the question' do
-          expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not \
+          expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js }.to_not \
           change(Answer, :count)
         end
 
-        it 'renders answers/_answer.html.slim and send notice message' do
-          post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-          expect(response).to render_template 'questions/show'
-          expect(flash[:notice]).to eq 'Answer field can not be blank.'
+        it 'renders template :create' do
+          post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js
+          expect(response).to render_template :create
         end
       end
     end

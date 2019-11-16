@@ -8,8 +8,8 @@ p = @question.body
 
 hr
 h3 Answers
-/ .answers
-= render @question.answers
+.answers
+  = render @question.answers
 
 .answer-errors
  = render 'shared/errors', resource: @answer

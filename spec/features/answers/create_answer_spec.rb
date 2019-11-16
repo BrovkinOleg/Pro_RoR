@@ -17,7 +17,6 @@ feature 'Create answer', %q{
       fill_in 'Add your answer', with: 'test answer'
       click_on 'Create'
 
-      expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'test answer'
       expect(current_path).to eq question_path(question)
     end
@@ -26,8 +25,7 @@ feature 'Create answer', %q{
       fill_in 'Add your answer', with: ''
       click_on 'Create'
 
-      expect(page).to have_content 'Answer field can not be blank.'
-      expect(current_path).to eq question_answers_path(question)
+      expect(current_path).to eq question_path(question)
     end
   end
 
