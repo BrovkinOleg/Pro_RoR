@@ -8,7 +8,11 @@ p = @question.body
 
 hr
 h3 Answers
+.answers
 = render @question.answers
+
+.answer-errors
+  = render 'shared/errors', resource: @answer
 
 - if user_signed_in?
   = render 'questions/form'

@@ -7,7 +7,7 @@ feature 'Create answer', %q{
   given(:user) { create :user }
   given!(:question) { create :question, user: user }
 
-  describe 'Authenticated user tries create answer' do
+  describe 'Authenticated user tries create answer', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -22,7 +22,7 @@ feature 'Create answer', %q{
       expect(current_path).to eq question_path(question)
     end
 
-    scenario 'with not-valid attr'  do
+    scenario 'with not-valid attr' do
       fill_in 'Add your answer', with: ''
       click_on 'Create'
 
