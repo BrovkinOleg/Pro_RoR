@@ -1,6 +1,5 @@
 import $ from 'jquery';
 $(document).on('turbolinks:load',function(){
-// $(document).ready(function(){
   $('.answers').on('click', '.edit-answer-link', function (e) {
     e.preventDefault();
     $(this).hide();
@@ -8,3 +7,4 @@ $(document).on('turbolinks:load',function(){
     $('form#edit-answer-' + answerId).removeClass('hidden');
   })
 })
+

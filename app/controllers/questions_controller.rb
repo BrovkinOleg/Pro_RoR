@@ -25,13 +25,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author?(@question)
-      @question.update(question_params)
-      flash[:notice] = 'You question successfully update.'
-    else
-      flash[:notice] = 'You can not update this question.'
-    end
-    redirect_to @question
+    @question.update(question_params) if current_user.author?(@question)
   end
 
   def destroy

@@ -2,9 +2,9 @@
 
 p = link_to 'Ask question', new_question_path
 
-p = render 'shared/signed.html.slim', local: true
-
 hr
-= render partial: 'questions/question', collection: @questions
+.questions
+  = render partial: 'questions/question', collection: @questions
 
-p = render 'shared/footer', local: true
+.question-errors
+  = render 'shared/footer', resource: @question
