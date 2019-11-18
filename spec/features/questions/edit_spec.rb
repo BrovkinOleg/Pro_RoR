@@ -52,7 +52,7 @@ feature 'User can edit his question', "
     end
   end
 
-  describe 'Unauthenticated user' do
+  describe 'Unauthenticated user', js: true do
     scenario 'can not edit question' do
       visit root_path
 
