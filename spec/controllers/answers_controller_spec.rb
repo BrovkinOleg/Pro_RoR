@@ -3,7 +3,10 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
 
   let(:user) { create :user }
+  let(:new_user) { create :user }
   let(:question) { create :question, user: user }
+  let!(:answer) { create(:answer, question: question, user: user) }
+  let!(:new_answer) { create(:answer, question: question, user: new_user) }
 
   describe 'POST #create' do
     context 'Unregistered user' do
@@ -51,6 +54,14 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    context 'Unregistered user' do
+      before { get :new, params: { question_id: question } }
+
+      it 'redirect to sign_in page' do
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
     context 'Registered user' do
       before { sign_in(user) }
       before { get :new, params: { question_id: question } }
@@ -65,15 +76,161 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    context 'Unregistered user' do
-      before { get :new, params: { question_id: question } }
+  describe 'DELETE #destroy' do
 
-      it 'redirect to sign_in page' do
-        expect(response).to redirect_to new_user_session_path
+    context 'authenticated user' do
+      before { sign_in(user) }
+
+      it 'deletes his own answer' do
+        expect { delete :destroy, params: { id: answer.id, question_id: question.id },
+                 format: :js }.to change(Answer, :count).by(-1)
+      end
+
+      it 'and renders template destroy' do
+        delete :destroy, params: { id: answer, question_id: question }, format: :js
+        expect(response).to render_template 'answers/destroy.js.erb'
+      end
+
+      it 'tries to delete not his answer' do
+        expect { delete :destroy, params: { id: new_answer, question_id: question.id },
+                 format: :js }.to_not change(Answer, :count)
+      end
+
+      it 'and renders template destroy' do
+        delete :destroy, params: { id: new_answer, question_id: question }, format: :js
+        expect(response).to render_template 'answers/destroy.js.erb'
+      end
+    end
+
+    context 'guest, not authenticated user' do
+      it 'does not delete answer' do
+        expect { delete :destroy, params: { id: answer, question_id: question },
+                 format: :js }.to_not change(Answer, :count)
+      end
+
+      it 'returns 401 status' do
+        delete :destroy, params: { id: answer, question_id: question }, format: :js
+        expect(response).to have_http_status(401)
       end
     end
   end
 
+  describe 'PATCH #update' do
 
+    context 'Unauthenticated user, guest' do
+      it 'does not update answer' do
+        expect { patch :update, params: { id: answer, question_id: question,
+                 answer: { body: 'new body' } }, format: :js}.to_not change(answer.reload, :body)
+      end
+
+      it 'returns 401 status' do
+        patch :update,  params: { id: answer, question_id: question,
+        answer: { body: 'new body' } }, format: :js
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'Authenticated user edit answer' do
+      before { sign_in(user) }
+      context 'with valid attributes' do
+        it 'changes answer attributes' do
+          patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' } },
+                format: :js
+          answer.reload
+          expect(answer.body).to eq 'new body'
+        end
+
+        it 'renders template update' do
+          patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' } },
+                format: :js
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'does not change answer attributes' do
+          expect { patch :update, params: { id: answer, question_id: question,
+                   answer: attributes_for(:answer, :invalid) }, format: :js}.to_not change(answer.reload, :body)
+        end
+
+        it 'renders template update' do
+          patch :update, params:
+              { id: answer, question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'Not author' do
+
+        it 'tries to edit answer' do
+          expect { patch :update, params: { id: new_answer, question_id: question,
+                   new_answer: { body: 'new body' } }, format: :js}.to_not change(new_answer.reload, :body)
+        end
+
+        it 'renders template update' do
+          patch :update, params: { id: new_answer, question_id: question,
+                 new_answer: { body: 'new body' } }, format: :js
+          expect(response).to render_template :update
+        end
+      end
+    end
+  end
+
+  describe 'PATCH #best_answer' do
+    context 'Authenticated author of the question' do
+      before { sign_in(user) }
+
+      it 'can set best_answer' do
+        patch :best_answer, params: { id: answer, question_id: question,
+             answer: { best: true } }, format: :js
+        answer.reload
+
+        expect(answer.best).to eq true
+      end
+
+      it 'renders best_answer view' do
+        patch :best_answer, params: { id: answer, question_id: question,
+              answer: { best: true } }, format: :js
+
+        expect(response).to render_template :best_answer
+      end
+    end
+
+    context 'Authenticated not author of the question' do
+      before { sign_in(new_user) }
+
+      it 'does not change best_answer' do
+        patch :best_answer, params: { id: answer, question_id: question,
+               answer: { best: true } }, format: :js
+        answer.reload
+
+        expect(answer.best).to eq false
+      end
+
+      it 'renders template best_answer' do
+        patch :best_answer, params: { id: answer, question_id: question,
+               answer: { best: true } }, format: :js
+        answer.reload
+
+        expect(response).to render_template :best_answer
+      end
+    end
+
+    context 'Unauthenticated user' do
+      it 'does not change best_answer' do
+        patch :best_answer, params: { id: answer, question_id: question,
+               answer: { best: true } }, format: :js
+        answer.reload
+
+        expect(answer.best).to eq false
+      end
+
+      it 'returns 401 status' do
+        patch :best_answer, params: { id: answer, question_id: question,
+              answer: { best: true } }, format: :js
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end
