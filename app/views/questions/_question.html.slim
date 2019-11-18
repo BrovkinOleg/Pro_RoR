@@ -7,7 +7,7 @@ div id = "question_#{question.id}"
         td
         td = link_to 'Delete question', question_path(question), method: :delete
 
-    = form_with model: question, class: 'hidden', html: { id: "edit-question-#{ question.id }" } do |f|
+    = form_with model: question, class: 'hidden', html: { id: "edit-question-#{ question.id }" }, remote: true do |f|
       table
         tr
           td = f.label :title, 'Edit title'

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Delete question' do
+feature 'Delete question', js: true do
 
   given(:user) { create :user }
   given(:another_user) { create :user }

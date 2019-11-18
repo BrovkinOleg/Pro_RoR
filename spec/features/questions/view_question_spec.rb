@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'View question' do
+feature 'View question', js: true do
 
   given(:user) { create :user }
   given!(:question) { create :question, user: user }

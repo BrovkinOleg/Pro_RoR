@@ -1,4 +1,4 @@
-= render 'shared/errors', local: true, resource: @question
+= render 'shared/errors', local: true, remote: true, resource: @question
 table
   tr
     h2 = @question.title
@@ -14,9 +14,9 @@ hr
 .answer-errors
   = render 'shared/errors', resource: @answer
 hr
+
 - if user_signed_in?
   = render 'questions/form'
-
 - else
   | Sign_in or Sign_up if you want to leave an answer
 
