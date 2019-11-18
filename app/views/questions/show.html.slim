@@ -1,9 +1,9 @@
 = render 'shared/errors', local: true, resource: @question
 table
   tr
-    th = @question.title
+    h2 = @question.title
   tr
-    th = @question.body
+    h3 = @question.body
     - if current_user&.author?(@question)
       td = link_to 'Delete question', question_path(@question), method: :delete
 

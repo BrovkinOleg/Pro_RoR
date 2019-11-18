@@ -4,4 +4,11 @@ class Answer < ApplicationRecord
   belongs_to :user
 
   validates :body, presence: true
+
+  default_scope { order(best: :desc).order(:created_at) }
+
+  def best_answer!
+    question.answers.update_all(best: false)
+    self.update!(best: true)
+  end
 end

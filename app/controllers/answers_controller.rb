@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question
-  before_action :load_answer, only: [:edit, :update, :destroy]
+  before_action :load_answer, only: [:edit, :update, :destroy, :best_answer]
 
   def new
     @answer = @question.answers.new
@@ -13,14 +13,17 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params) if current_user.author?(@answer)
-    @question = @answer.question  # @question будет доступен в update.js.erb
+    @question = @answer.question
   end
 
   def edit; end
 
   def destroy
     @answer.destroy if current_user.author?(@answer)
-    # redirect_to @answer.question, notice: 'Answer successfully deleted.'
+  end
+
+  def best_answer
+    @answer.best_answer! if current_user.author?(@answer.question)
   end
 
   private
