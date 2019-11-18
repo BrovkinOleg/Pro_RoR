@@ -13,7 +13,7 @@ feature 'User can create question', %q{
       sign_in(user)
 
       visit questions_path
-      click_on 'Ask question'
+      click_on 'Ask new question'
     end
 
     scenario 'asks a question' do
@@ -38,7 +38,7 @@ feature 'User can create question', %q{
     visit questions_path
     expect(page).to have_no_button 'Create answer'
 
-    click_on 'Ask question'
+    click_on 'Ask new question'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
