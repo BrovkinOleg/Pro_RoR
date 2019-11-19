@@ -20,7 +20,6 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy if current_user.author?(@answer)
-    render 'answers/destroy.js.erb'
   end
 
   def best_answer

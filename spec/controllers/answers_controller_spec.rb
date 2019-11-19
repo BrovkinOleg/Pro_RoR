@@ -88,7 +88,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'and renders template destroy' do
         delete :destroy, params: { id: answer, question_id: question }, format: :js
-        expect(response).to render_template 'answers/destroy.js.erb'
+        expect(response).to render_template :destroy
       end
     end
 
@@ -102,7 +102,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'and renders template destroy' do
         delete :destroy, params: { id: new_answer, question_id: question }, format: :js
-        expect(response).to render_template 'answers/destroy.js.erb'
+        expect(response).to render_template :destroy
       end
     end
 
