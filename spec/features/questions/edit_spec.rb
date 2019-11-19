@@ -17,12 +17,11 @@ feature 'User can edit his question', "
     end
 
     scenario 'edits his own question', js: true do
-      expect(question.title).to eq 'MyString'
-      expect(question.body).to eq 'MyText'
+      expect(page).to have_content 'MyString'
+      expect(page).to have_content 'MyText'
       fill_in 'Edit title', with: 'edited title'
       fill_in 'Edit body', with: 'edited body'
       click_on 'Save'
-      sleep(1)
       question.reload
       expect(question.body).to eq 'edited body'
       expect(question.title).to eq 'edited title'

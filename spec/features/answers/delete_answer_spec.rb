@@ -12,7 +12,6 @@ feature 'Delete Answer' do
       sign_in(user)
       visit question_path(question)
       expect(page).to have_content answer.body
-      expect(page).to have_content 'Delete'
       click_on 'Delete'
 
       expect(page).to have_no_content answer.body

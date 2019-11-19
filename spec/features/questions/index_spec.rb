@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can see list of questions' do
   given!(:user) { create(:user) }
-  given!(:questions) { create_list(:question, 3, user: user) }
+  given!(:questions) { create_list(:question, 2, user: user) }
   background { visit root_path }
 
   describe 'Authenticated user', js: true do

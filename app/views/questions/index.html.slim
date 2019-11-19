@@ -4,7 +4,7 @@ p = link_to 'Ask new question', new_question_path
 
 hr
 .questions
-  = render partial: 'questions/question', collection: @questions
+  = render @questions
 
 .question-errors
   = render 'shared/footer', resource: @question

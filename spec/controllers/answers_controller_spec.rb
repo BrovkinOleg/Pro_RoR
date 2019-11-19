@@ -90,6 +90,10 @@ RSpec.describe AnswersController, type: :controller do
         delete :destroy, params: { id: answer, question_id: question }, format: :js
         expect(response).to render_template 'answers/destroy.js.erb'
       end
+    end
+
+    context 'authenticated user' do
+      before { sign_in(user) }
 
       it 'tries to delete not his answer' do
         expect { delete :destroy, params: { id: new_answer, question_id: question.id },
@@ -186,7 +190,7 @@ RSpec.describe AnswersController, type: :controller do
              answer: { best: true } }, format: :js
         answer.reload
 
-        expect(answer.best).to eq true
+        expect(answer).to be_best
       end
 
       it 'renders best_answer view' do
@@ -205,7 +209,7 @@ RSpec.describe AnswersController, type: :controller do
                answer: { best: true } }, format: :js
         answer.reload
 
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
       end
 
       it 'renders template best_answer' do
@@ -223,7 +227,7 @@ RSpec.describe AnswersController, type: :controller do
                answer: { best: true } }, format: :js
         answer.reload
 
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
       end
 
       it 'returns 401 status' do

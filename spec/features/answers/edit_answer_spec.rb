@@ -19,6 +19,7 @@ feature 'User can edit his answer', %q{
 
     scenario 'edits his answer' do
       within '.answers' do
+        expect(page).to have_content answer.body
         fill_in 'Body_Edit', with: 'edited answer'
         click_on 'Save'
 
