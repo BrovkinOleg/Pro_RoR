@@ -1,6 +1,6 @@
 div id = "answer_#{answer.id}"
   p = answer.body
-  - if answer.best
+  - if answer.best?
     h4 = 'This answer is the best!'
 
   - if current_user&.author?(answer)

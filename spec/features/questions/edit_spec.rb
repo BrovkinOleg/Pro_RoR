@@ -22,11 +22,12 @@ feature 'User can edit his question', "
       fill_in 'Edit title', with: 'edited title'
       fill_in 'Edit body', with: 'edited body'
       click_on 'Save'
+      sleep(1)
       question.reload
-      expect(question.body).to eq 'edited body'
-      expect(question.title).to eq 'edited title'
       expect(page).to have_no_content question.title
       expect(page).to have_no_content question.body
+      expect(question.body).to eq 'edited body'
+      expect(question.title).to eq 'edited title'
     end
 
     scenario 'edits his question with errors' do
