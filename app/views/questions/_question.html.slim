@@ -3,7 +3,7 @@ div id = "question_#{question.id}"
     table
       tr
         td = link_to question.title, question_path(question)
-        td = link_to 'Edit question', '####', class: 'edit-question-link', data: { question_id: question.id }
+        td = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
         td
         td = link_to 'Delete question', question_path(question), method: :delete
 
