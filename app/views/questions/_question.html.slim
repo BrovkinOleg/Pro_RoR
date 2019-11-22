@@ -18,7 +18,7 @@ div id = "question_#{question.id}"
           td = render 'shared/attached_files', resource: question
         tr
           td = f.label :files
-          td = f.file_field :files, multiple: true
+          td = f.file_field :files, multiple: true, direct_upload: true
         tr
           td = f.submit 'Save'
   - else
