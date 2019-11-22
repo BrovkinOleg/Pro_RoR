@@ -10,6 +10,9 @@ h2 New Question
       td = f.label :body
       td = f.text_area :body
     tr
+      td = f.label :files
+      td = f.file_field :files, multiple: true
+    tr
       td = ''
       td = f.submit 'Ask'
 
