@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       patch "best_answer", on: :member, as: :best
     end
   end
+  resources :attachments, only: :destroy
 
   root to: 'questions#index'
+
 end

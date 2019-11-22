@@ -17,5 +17,9 @@ div id = "answer_#{answer.id}"
       tr
         td = f.label :body, 'Body_Edit'
         td = f.text_area :body
+      tr
+        td = f.label :files
+        td = f.file_field :files, multiple: true, direct_upload: true
+      tr
         td = f.submit 'Save'
   hr
