@@ -15,6 +15,11 @@ div id = "question_#{question.id}"
           td = f.label :body, 'Edit body'
           td = f.text_area :body
         tr
+          td = render 'shared/attached_files', resource: question
+        tr
+          td = f.label :files
+          td = f.file_field :files, multiple: true
+        tr
           td = f.submit 'Save'
   - else
     p = link_to question.title, question_path(question)

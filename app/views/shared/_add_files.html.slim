@@ -1,0 +1,5 @@
+= form_with model: @question, local: true do |f|
+  table
+    tr
+      td = f.label :files
+      td = f.file_field :files, multiple: true
