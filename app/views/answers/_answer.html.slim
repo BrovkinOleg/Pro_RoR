@@ -18,6 +18,8 @@ div id = "answer_#{answer.id}"
         td = f.label :body, 'Body_Edit'
         td = f.text_area :body
       tr
+        td = render 'shared/attached_files', resource: answer
+      tr
         td = f.label :files
         td = f.file_field :files, multiple: true, direct_upload: true
       tr
