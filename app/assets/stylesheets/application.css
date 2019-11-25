@@ -52,5 +52,5 @@ https://edgeguides.rubyonrails.org/active_storage_overview.html#direct-uploads*/
 }
 
 input[type=file][data-direct-upload-url][disabled] {
-    display: none;
+  display: none;
 }
