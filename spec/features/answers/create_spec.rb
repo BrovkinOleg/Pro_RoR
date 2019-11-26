@@ -15,7 +15,7 @@ feature 'Create answer', %q{
 
     scenario 'with valid attr'  do
       fill_in 'Add your answer', with: 'test answer'
-      click_on 'Create'
+      click_on 'Create answer'
 
       expect(page).to have_content 'test answer'
       expect(current_path).to eq question_path(question)
@@ -23,9 +23,21 @@ feature 'Create answer', %q{
 
     scenario 'with not-valid attr' do
       fill_in 'Add your answer', with: ''
-      click_on 'Create'
+      click_on 'Create answer'
 
       expect(current_path).to eq question_path(question)
+    end
+
+    scenario 'can create answer with attached file' do
+      fill_in 'Add your answer', with: 'my_answer'
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Create answer'
+      click_on 'Edit'
+
+      within '.answers' do
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
     end
   end
 

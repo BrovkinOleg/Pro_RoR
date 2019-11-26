@@ -8,9 +8,27 @@ feature 'Delete Answer' do
   given!(:answer) { create :answer, question: question, user: user }
 
   describe 'Authenticated user', js: true do
-    scenario 'author delete his answer' do
+    before do
       sign_in(user)
       visit question_path(question)
+    end
+
+    scenario 'author can delete attached answer file' do
+      within '.answers' do
+        click_on 'Edit'
+        attach_file 'Files', "#{Rails.root}/spec/rails_helper.rb"
+        click_on 'Save'
+        click_on 'Edit'
+
+        expect(page).to have_link 'rails_helper.rb'
+        click_on 'Remove file'
+
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
+    end
+
+    scenario 'author delete his answer' do
+
       expect(page).to have_content answer.body
       click_on 'Delete'
 
@@ -18,10 +36,10 @@ feature 'Delete Answer' do
     end
 
     scenario 'another user can not delete answer' do
-      sign_in(user)
-      visit question_path(question)
 
       expect(page).to have_no_button 'Delete'
     end
   end
+
+  describe
 end
