@@ -31,5 +31,6 @@ yarn-debug.log*
 .yarn-integrity
 
 /config/database.yml
+/spec/fixtures
 .idea
 /vendor/cache
