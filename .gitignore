@@ -32,5 +32,4 @@ yarn-debug.log*
 
 /config/database.yml
 .idea
-.env
 /vendor/cache
