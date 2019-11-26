@@ -34,6 +34,40 @@ feature 'User can edit his question', "
       expect(page).to have_content "Title can't be blank"
       expect(page).to have_content "Body can't be blank"
     end
+
+    describe 'Author of question', js: true do
+      scenario 'edits question fields and add files' do
+        fill_in 'Edit title', with: 'edited title'
+        fill_in 'Edit body', with: 'edited body'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_content 'edited title'
+
+        visit question_path(question)
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+  end
+
+  describe 'Author of question', js: true do
+    background do
+      sign_in(question.user)
+      question.files.attach(create_file_blob)
+      visit question_path(question)
+    end
+
+    scenario 'can delete attached file' do
+      expect(page).to have_link 'Remove file'
+      expect(page).to have_link 'file.jpg'
+
+      click_on 'Remove file'
+
+      expect(page).to have_no_link 'file.jpg'
+      expect(page).to have_no_link 'Remove file'
+    end
   end
 
   describe 'Authenticated not author', js: true do
@@ -46,6 +80,12 @@ feature 'User can edit his question', "
 
       expect(page).to have_no_link('Edit question')
     end
+
+    scenario 'tries to delete attached file from question' do
+      visit question_path(question)
+
+      expect(page).to have_no_link('Remove file')
+    end
   end
 
   describe 'Unauthenticated user', js: true do
@@ -53,6 +93,12 @@ feature 'User can edit his question', "
       visit root_path
 
       expect(page).to have_no_link 'Edit question'
+    end
+
+    scenario 'can not delete attached file' do
+      visit question_path(question)
+
+      expect(page).to have_no_link 'Remove file'
     end
   end
 end
