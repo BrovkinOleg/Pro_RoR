@@ -40,6 +40,4 @@ feature 'Delete Answer' do
       expect(page).to have_no_button 'Delete'
     end
   end
-
-  describe
 end

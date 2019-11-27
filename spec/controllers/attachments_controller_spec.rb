@@ -21,6 +21,7 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'renders destroy template' do
         expect { delete :destroy, params: { id: question.files[0] }, format: :js }.to \
         change(question.files, :count).by(-1)
+        expect(response).to render_template :destroy
       end
     end
 
@@ -33,11 +34,6 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'can not delete file' do
         expect { delete :destroy, params: { id: second_question.files[0] }, format: :js }.not_to \
         change(second_question.files, :count)
-      end
-
-      it 'renders destroy template' do
-        expect { delete :destroy, params: { id: second_question.files[0] }, format: :js }.not_to \
-        change(second_question.files, :count)
         expect(response).to render_template :destroy
       end
     end
@@ -45,18 +41,9 @@ RSpec.describe AttachmentsController, type: :controller do
     context 'Unauthenticated user' do
       before { question.files.attach(create_file_blob) }
 
-      it 'can not delete file' do
-        expect do
-          delete :destroy, params:
-              { id: question.files[0] }, format: :js
-        end .not_to change(question.files, :count)
-      end
-
-      it 'returns 401 status' do
-        expect do
-          delete :destroy, params:
-              { id: question.files[0] }, format: :js
-        end .not_to change(question.files, :count)
+      it 'can not delete file and returns 401 status' do
+        expect { delete :destroy, params: { id: question.files[0] }, format: :js }.not_to \
+        change(question.files, :count)
         expect(response).to have_http_status(401)
       end
     end

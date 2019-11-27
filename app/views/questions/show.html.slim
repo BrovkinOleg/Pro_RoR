@@ -5,7 +5,8 @@ h3 = @question.body
 
 - if current_user&.author?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
-  = render 'shared/attached_files', resource: @question
+
+= render 'shared/attached_files', resource: @question
 
 hr
 .answers
