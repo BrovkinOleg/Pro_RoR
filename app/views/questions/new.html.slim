@@ -13,6 +13,15 @@ h2 New Question
       td = f.label :files
       td = f.file_field :files, multiple: true, direct_upload: true
     tr
+      th = 'Link:'
+    = f.fields_for :links do |l|
+      tr
+        td = l.label :name, 'Link name'
+        td = l.text_field :name
+      tr
+        td = l.label :url
+        td = l.text_field :url
+    tr
       td = ''
       td = f.submit 'Ask'
 

@@ -8,6 +8,12 @@ h3 = @question.body
 
 = render 'shared/attached_files', resource: @question
 
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li = link_to link.name, link.url
+
 hr
 .answers
   = render @question.answers
