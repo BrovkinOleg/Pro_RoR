@@ -4,7 +4,7 @@ div id = "answer_#{answer.id}"
     h4 = 'This answer is the best!'
 
   .links
-    p Links:
+    p Links_for_answer:
     ul
       - answer.links.each do |link|
         li = link_to link.name, link.url

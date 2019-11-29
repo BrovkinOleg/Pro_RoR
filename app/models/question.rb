@@ -1,8 +1,5 @@
 
 class Question < ApplicationRecord
-  #include HasLinks
-  #include Votable
-  # include LinksAssociations
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable

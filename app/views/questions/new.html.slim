@@ -2,25 +2,23 @@
 h2 New Question
 
 = form_with model: @question, local: true do |f|
-  table
-    tr
-      td = f.label :title
-      td = f.text_field :title
-    tr
-      td = f.label :body
-      td = f.text_area :body
-    tr
-      td = f.label :files
-      td = f.file_field :files, multiple: true, direct_upload: true
-    tr
-      th = 'Link:'
+  p
+    = f.label :title
+    = f.text_field :title
+  p
+    = f.label :body
+    = f.text_area :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+
+  h4 Add_question_links
+  .links
     = f.fields_for :links do |l|
-      tr
-        td = l.label :name, 'Link name'
-        td = l.text_field :name
-      tr
-        td = l.label :url
-        td = l.text_field :url
+      = render 'shared/link_fields', f: l
+
+  .add_links
+    = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
       / .profit
           /     = f.fields_for :profit do |profit|
@@ -30,9 +28,9 @@ h2 New Question
       /     = profit.text_field :name
       / = profit.file_field :image, direct_upload: true
 
-    tr
-      td = ''
-      td = f.submit 'Ask'
+    p
+      = ''
+      = f.submit 'Ask'
 
 p = link_to 'Back to all questions', questions_path
 p = render 'shared/footer'
