@@ -14,6 +14,11 @@ h3 = @question.body
     - @question.links.each do |link|
       li = link_to link.name, link.url
 
+  / .profits
+  /   - if question.profit&.persisted?
+  /     p
+  /       = render question.profit
+
 hr
 .answers
   = render @question.answers
