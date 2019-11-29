@@ -20,7 +20,8 @@ gem 'jbuilder', '~> 2.7'
 
 # gem for amazon S3
 gem "aws-sdk-s3", require: false
-
+# gem for polymorphic associations
+gem 'cocoon'
 # gem 'jquery-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
