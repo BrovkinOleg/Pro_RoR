@@ -10,9 +10,7 @@ h3 = @question.body
 
 .links
   p Links_for_question:
-  ul
-    - @question.links.each do |link|
-      li = link_to link.name, link.url
+  = render 'shared/attached_links', resource: @question
 
   / .profits
   /   - if question.profit&.persisted?

@@ -2,14 +2,14 @@
   = f.label :body, 'Add your answer'
   = f.text_area :body
 
-  p Add_answer_links:
-  = f.fields_for :links do |l|
-    = l.label :name, 'Link name'
-    = l.text_area :name
-    p
-    = l.label :url_encode
-    = l.text_field :url
+  .links
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+  .add_links
+    = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+
   p
-  = f.label :files
-  = f.file_field :files, multiple: true, direct_upload: true
-  p = f.submit 'Create answer'
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+  p
+    = f.submit 'Create answer'
