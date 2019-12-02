@@ -1,8 +1,9 @@
+
+p Links:
 ul
   - resource.links.each do |link|
-    - if link.gist?
-      - gist_id = "#{link.url.split('/').last}"
-      li = gist_id
-      / GET request to https://api.github.com/gists/gist_id
-    - else
-      li = link_to link.name, link.url
+    li
+      - if link.gist?
+        code gist="#{link.url}.json" Loading gist
+      - else
+        = link_to link.name, link.url
