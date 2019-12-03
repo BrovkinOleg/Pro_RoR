@@ -4,7 +4,6 @@ div id = "answer_#{answer.id}"
     h4 = 'This answer is the best!'
 
   .links
-    p Links_for_answer:
     = render 'shared/attached_links', resource: answer
 
   - if current_user&.author?(answer)

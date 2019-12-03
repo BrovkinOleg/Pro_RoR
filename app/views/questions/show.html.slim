@@ -1,21 +1,20 @@
 = render 'shared/errors', local: true, remote: true, resource: @question
 
+.profits
+  = render 'profit/profit', profit: @question.profit
+
 h2 = @question.title
 h3 = @question.body
+
+= render 'shared/attached_files', resource: @question
 
 - if current_user&.author?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
 
-= render 'shared/attached_files', resource: @question
-
 .links
-  p Links_for_question:
   = render 'shared/attached_links', resource: @question
 
-  / .profits
-  /   - if question.profit&.persisted?
-  /     p
-  /       = render question.profit
+
 
 hr
 .answers

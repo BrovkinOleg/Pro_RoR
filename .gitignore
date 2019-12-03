@@ -34,3 +34,4 @@ yarn-debug.log*
 /spec/fixtures
 .idea
 /vendor/cache
+/app/assets/images

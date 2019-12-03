@@ -1,11 +1,11 @@
 div id = "question_#{question.id}"
   hr
+    = link_to question.title, question_path(question)
     .links
-      p Links_for_question:
       = render 'shared/attached_links', resource: question
 
     - if current_user&.author?(question)
-      p = link_to question.title, question_path(question)
+
       p = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
       p = link_to 'Delete question', question_path(question), method: :delete
 
@@ -29,5 +29,3 @@ div id = "question_#{question.id}"
             = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
         p
           = f.submit 'Save'
-    - else
-      p = link_to question.title, question_path(question)
