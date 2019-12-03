@@ -7,6 +7,11 @@ Rails.application.routes.draw do
     end
   end
   resources :attachments, only: :destroy
+  resources :links, only: :destroy
+
+  resources :users do
+    resources :profits, only: :index
+  end
 
   root to: 'questions#index'
 

@@ -12,6 +12,9 @@ h2 New Question
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
+    .profits
+      = render 'shared/profits', var: f
+
   h4 Add_question_links
   .links
     = f.fields_for :links do |l|
@@ -19,9 +22,6 @@ h2 New Question
 
   .add_links
     = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
-
-  .profit
-    = render 'shared/profit', var: f
 
     p
       = f.submit 'Ask'
