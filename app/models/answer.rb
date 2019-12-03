@@ -16,6 +16,7 @@ class Answer < ApplicationRecord
     transaction do
       question.answers.update_all(best: false)
       self.update!(best: true)
+      question.profit&.update!(user: user)
     end
   end
 end

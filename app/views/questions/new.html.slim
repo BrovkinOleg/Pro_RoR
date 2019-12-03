@@ -20,13 +20,10 @@ h2 New Question
   .add_links
     = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
-      / .profit
-      /   = f.fields_for :profit do |profit|
-      /     = profit.text_field :name
-      /     = profit.file_field :image, direct_upload: true
+  .profit
+    = render 'shared/profit', var: f
 
     p
-      = ''
       = f.submit 'Ask'
 
 p = link_to 'Back to all questions', questions_path

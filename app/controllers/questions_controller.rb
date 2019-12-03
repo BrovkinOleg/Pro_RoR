@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
     @question.links.new
+    @profit = @question.build_profit
   end
 
   def create

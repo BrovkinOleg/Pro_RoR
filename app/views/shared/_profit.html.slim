@@ -1,0 +1,7 @@
+= var.fields_for :profit do |profit|
+  p
+    = profit.label :name, 'Profit_name'
+    = profit.text_field :name
+  p
+    = profit.label :image, 'Profit_image'
+    = profit.file_field :image, direct_upload: true

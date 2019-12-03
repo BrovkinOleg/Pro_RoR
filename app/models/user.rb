@@ -5,9 +5,7 @@ class User < ApplicationRecord
 
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
-  has_one :profit, dependent: :destroy
-
-  accepts_nested_attributes_for :profit, reject_if: :all_blank, allow_destroy: true
+  has_many :profits, dependent: :destroy
 
   def author?(object)
     self.id == object.user_id
