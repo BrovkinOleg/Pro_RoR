@@ -35,3 +35,4 @@ yarn-debug.log*
 .idea
 /vendor/cache
 /app/assets/images
+config/local_env.yml

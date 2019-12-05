@@ -1,6 +1,6 @@
 
-- if current_user&.author?(profit)
-  - if profit&.persisted?
+- if profit&.persisted?
+  - if current_user&.author?(profit)
     p
       = profit.name
       - if profit.image.attached?
