@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :profit do
-    string { "" }
+    sequence(:name) { |n| "name#{n}" }
   end
 end

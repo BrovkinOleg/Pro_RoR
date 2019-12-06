@@ -5,6 +5,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:user) { create :user }
   let(:new_user) { create :user }
   let(:question) { create :question, user: user }
+  let!(:profit) { create(:profit, question: question) }
   let!(:answer) { create(:answer, question: question, user: user) }
   let!(:new_answer) { create(:answer, question: question, user: new_user) }
 
@@ -31,8 +32,35 @@ RSpec.describe AnswersController, type: :controller do
           change(question.answers, :count).by(1)
         end
 
+        it 'answer is linked to user' do
+          expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to \
+          change(user.answers, :count).by(1)
+        end
+
         it 'renders template :create' do
           post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js
+          expect(response).to render_template :create
+        end
+      end
+
+      context 'with link' do
+        before { sign_in(user) }
+        it 'saves question.answer in database' do
+          expect { post :create, params: { question_id: question, answer: { body: 'MyBody', \
+                links_attributes: { '0' => { name: 'LinkName', url: 'https://www.linkexample.com/', \
+                                  _destroy: false } } } }, format: :js }.to change(question.answers, :count).by(1)
+        end
+
+        it 'answer is linked to user' do
+          expect { post :create, params: { question_id: question, answer: { body: 'MyBody',
+                links_attributes: { '0' => { name: 'LinkName',  url: 'https://www.linkexample.com/', \
+                                  _destroy: false } } } }, format: :js }.to change(user.answers, :count).by(1)
+        end
+
+        it 'renders create template' do
+          post :create, params: { question_id: question, answer: { body: 'MyBody',
+              links_attributes: { '0' => { name: 'LinkName', url: 'https://www.linkexample.com/', \
+                                           _destroy: false } } } }, format: :js
           expect(response).to render_template :create
         end
       end
@@ -41,8 +69,8 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answers) { create_list(:answer, 2, body: 'text', question: question, user: user) }
 
         it 'does not save the question' do
-          expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js }.to_not \
-          change(Answer, :count)
+          expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, \
+          format: :js }.to_not change(Answer, :count)
         end
 
         it 'renders template :create' do
@@ -152,6 +180,30 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
 
+      context 'update link attributes' do
+        let!(:answer_with_link) { create(:answer, question: question, user: user) }
+        let!(:link) { create(:link, linkable: answer_with_link) }
+        before { sign_in(user) }
+
+        it 'deletes answer link' do
+          expect(answer_with_link.links).not_to be_empty
+
+          patch :update, params: { id: answer_with_link, question_id: question, answer: \
+            { links_attributes: { '0': { name: link.name, url: link.url, \
+              _destroy: 1, id: link.id } } }, format: :js }
+          answer_with_link.reload
+
+          expect(answer_with_link.links).to be_empty
+        end
+
+        it 'renders template update' do
+          patch :update, params: { id: answer_with_link, question_id: question, \
+                answer: { body: 'MyBody', links_attributes: { '0' => { name: link.name, url: link.url, \
+                          _destroy: '1', id: link } } } }, format: :js
+          expect(response).to render_template :update
+        end
+      end
+
       context 'with invalid attributes' do
         it 'does not change answer attributes' do
           expect { patch :update, params: { id: answer, question_id: question,
@@ -191,6 +243,15 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
 
         expect(answer).to be_best
+      end
+
+      it 'sets profit to user' do
+        patch :best_answer, params: { id: answer, question_id: question,
+             answer: { best: true } }, format: :js
+        answer.reload
+        profit.reload
+
+        expect(answer.user).to eq profit.user
       end
 
       it 'renders best_answer view' do
