@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create :user }
   let(:question) { create :question, user: user }
-  let(:questions) { create_list(:question, 3, user: user) }
+  let(:questions) { create_list(:question, 2, user: user) }
 
   describe 'GET #index' do
     context 'Unregistered user' do
@@ -22,6 +22,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'populates an array of all questions' do
         expect(assigns(:questions)).to match_array(questions)
       end
+
       it 'renders index view' do
         expect(response).to render_template :index
       end
@@ -37,6 +38,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to be_a_new(Question)
       end
 
+      it 'assigns new @question.link' do
+        expect(assigns(:question).links.first).to be_a_new(Link)
+      end
+
       it 'render new view' do
         expect(response).to render_template :new
       end
@@ -46,9 +51,19 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     context 'Unregistered user' do
       before { get :show, params: {id: question} }
+
       it 'Assigns a requested question to @question' do
         expect(assigns(:question)).to eq question
       end
+
+      it 'assigns new answer for question' do
+        expect(assigns(:answer)).to be_a_new(Answer)
+      end
+
+      it 'assigns new link for answer' do
+        expect(assigns(:answer).links.first).to be_a_new(Link)
+      end
+
       it 'render show view' do
         expect(response).to render_template :show
       end
@@ -61,6 +76,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'assign requested question to @question' do
         expect(assigns(:question)).to eq(question)
       end
+
       it 'renders show view' do
         expect(response).to render_template :show
       end
@@ -95,6 +111,29 @@ RSpec.describe QuestionsController, type: :controller do
         it 'redirect to show view' do
           post :create, params: { question: attributes_for(:question) }
           expect(response).to redirect_to assigns(:question)
+        end
+      end
+
+      context 'add link' do
+        before { sign_in(user) }
+        it 'saves the new question in the database' do
+          expect { post :create, params: { question: { title: 'MyTitle', body: 'MyBody',
+             links_attributes: { '0' => { name: 'LinkName', url: 'https://www.linkexample.com/',
+                 _destroy: false } } } } }.to change(user.questions, :count).by(1)
+        end
+
+        it 'redirects to index view' do
+          post :create, params: { question: { title: 'MyTitle', body: 'MyBody',
+              links_attributes: { '0' => { name: 'LinkName', url: 'https://www.linkexample.com/',
+                                           _destroy: false } } } }
+          expect(response).to redirect_to assigns(:question)
+        end
+
+        it 'renders a flash message' do
+          post :create, params: { question: { title: 'MyTitle', body: 'MyBody',
+              links_attributes: { '0' => { name: 'LinkName', url: 'https://www.linkexample.com/',
+                                           _destroy: false } } } }
+          expect(flash[:notice]).to eq 'Your question successfully created.'
         end
       end
 
@@ -169,6 +208,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    let!(:question_with_link) { create(:question, user: user) }
+    let!(:link) { create(:link, linkable: question_with_link) }
     context 'Unregistered user' do
 
       it 'not changes attributes' do
@@ -220,6 +261,15 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.title).to eq 'new title'
           expect(question.body).to eq 'new body'
           expect(question.user).to eq user
+        end
+
+        it 'deletes link from question' do
+          patch :update, params: { id: question_with_link, question: { title: question_with_link.title,
+                body: question_with_link.body, links_attributes: { '0' => { name: link.name, url: link.url,
+                         _destroy: true, id: link } } } }, format: :js
+          question_with_link.reload
+
+          expect(question_with_link.links.count).to be_zero
         end
 
         it 'redirects to updated question' do

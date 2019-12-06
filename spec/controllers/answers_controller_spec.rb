@@ -190,7 +190,7 @@ RSpec.describe AnswersController, type: :controller do
 
           patch :update, params: { id: answer_with_link, question_id: question, answer: \
             { links_attributes: { '0': { name: link.name, url: link.url, \
-              _destroy: 1, id: link.id } } }, format: :js }
+              _destroy: true, id: link.id } } }, format: :js }
           answer_with_link.reload
 
           expect(answer_with_link.links).to be_empty
@@ -199,7 +199,7 @@ RSpec.describe AnswersController, type: :controller do
         it 'renders template update' do
           patch :update, params: { id: answer_with_link, question_id: question, \
                 answer: { body: 'MyBody', links_attributes: { '0' => { name: link.name, url: link.url, \
-                          _destroy: '1', id: link } } } }, format: :js
+                          _destroy: true, id: link } } } }, format: :js
           expect(response).to render_template :update
         end
       end
