@@ -1,5 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Profit, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  it { should belong_to :question }
+  it { should belong_to(:user).optional }
+
+  it { should validate_presence_of :name }
+
+  it 'have one attached file' do
+    expect(Profit.new.image).to be_an_instance_of(ActiveStorage::Attached::One)
+  end
 end
