@@ -9,6 +9,7 @@ feature 'User can edit his answer', %q{
   given(:second_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:link) { create(:link, linkable: answer) }
 
   describe 'Authenticated user author', js: true do
     background do
@@ -36,6 +37,29 @@ feature 'User can edit his answer', %q{
       end
 
       expect(page).to have_content "Body can't be blank"
+    end
+
+    scenario 'can add link for answer' do
+      within '.answers' do
+        fill_in 'Body_Edit', with: 'edited answer'
+        #click_on 'add link'
+        fill_in 'Link name', with: link.name
+        fill_in 'Url', with: link.url
+        click_on 'Save'
+
+        expect(page).to have_link link.name, href: link.url
+      end
+    end
+
+    scenario 'can delete link for answer' do
+      within '.answers' do
+        save_and_open_page
+        #page.all('delete link')[1].click
+        click_on 'delete link'
+        click_on 'Save'
+
+        expect(page).to have_no_link link.name, href: link.url
+      end
     end
 
     describe 'edits his answer with', js: true do

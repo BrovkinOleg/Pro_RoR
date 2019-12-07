@@ -8,6 +8,7 @@ feature 'User can edit his question', "
   given!(:user) { create(:user) }
   given(:new_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
+  given!(:link) { create(:link, linkable: question) }
 
   describe 'Authenticated user', js: true do
     background do
@@ -33,6 +34,27 @@ feature 'User can edit his question', "
 
       expect(page).to have_content "Title can't be blank"
       expect(page).to have_content "Body can't be blank"
+    end
+
+    scenario 'adds link to the question' do
+      fill_in 'Edit title', with: 'edited title'
+      fill_in 'Edit body', with: 'edited body'
+      fill_in 'Link name', with: link.name
+      fill_in 'Url', with: link.url
+      click_on 'Save'
+      visit question_path(question)
+
+      expect(page).to have_link link.name, href: link.url
+    end
+
+    scenario 'can delete link from the question' do
+      expect(page).to have_link link.name
+
+      click_on 'delete link'
+      click_on 'Save'
+      visit question_path(question)
+
+      expect(page).to have_no_link link.name
     end
 
     describe 'Author of question', js: true do
