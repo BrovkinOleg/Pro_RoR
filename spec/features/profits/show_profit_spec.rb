@@ -21,7 +21,7 @@ feature 'User can view a list of profits' do
       expect(page).to have_content second_profit.question.title
     end
 
-    scenario 'can not see not his profit' do
+    scenario 'can not see not his profits' do
       second_profit.update(user: second_user)
       click_on 'My profits'
 

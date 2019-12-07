@@ -245,7 +245,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).to be_best
       end
 
-      it 'sets profit to user' do
+      it 'sets profits to user' do
         patch :best_answer, params: { id: answer, question_id: question,
              answer: { best: true } }, format: :js
         answer.reload

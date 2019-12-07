@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can add profit to new question' do
+feature 'User can add profits to new question' do
   given(:user) { create(:user) }
 
   describe 'Authenticated user' do
@@ -12,14 +12,14 @@ feature 'User can add profit to new question' do
       attach_file 'question[profit_attributes][image]', "#{Rails.root}/app/assets/images/Badge_01.png"
     end
 
-    scenario 'add profit to new question without name' do
+    scenario 'add profits to new question without name' do
       fill_in 'Profit_name', with: ''
       click_on 'Ask'
 
       expect(page).to have_content "Profit name can't be blank"
     end
 
-    scenario 'add profit to new question with name and image' do
+    scenario 'add profits to new question with name and image' do
       fill_in 'Profit_name', with: 'Your_profit'
       click_on 'Ask'
 

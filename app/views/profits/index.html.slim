@@ -1,0 +1,21 @@
+- if @profits.any?
+  table#profits class='table'
+    thead
+      tr
+        th Title question
+        th Image
+        th Name profits
+    tbody
+      - @profits.each do |profit|
+        tr
+          td = profit.question.title
+          td
+            - if profit.image.attached?
+              img src = url_for(profit.image)
+          td = profit.name
+  p
+    b Count profits:
+    = @profits.count
+- else
+  p You have not profits.
+p = link_to 'Back to all questions', questions_path
