@@ -2,15 +2,17 @@ require 'rails_helper'
 
 feature 'User can view a list of profits' do
   given(:user) { create(:user) }
-  given(:second_user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given(:second_question) { create(:question, user: second_question) }
   given!(:profit) { create(:profit, question: question, user: user) }
+
+  given(:second_user) { create(:user) }
+  given(:second_question) { create(:question, user: second_user) }
   given!(:second_profit) { create(:profit, question: second_question, user: user) }
 
   describe 'Authenticated user' do
     background do
       sign_in(user)
+      visit root_path
     end
 
     scenario 'see list of profits' do
@@ -29,8 +31,8 @@ feature 'User can view a list of profits' do
     end
   end
 
-  scenario 'Unauthenticated can not see profits' do
-    visit user_trophies_path
-    expect(page).to_not have_selector('#profits')
+  scenario "Unauthenticated can not see link 'My profits'" do
+    visit root_path
+    expect(page).to have_no_link('My profits')
   end
 end

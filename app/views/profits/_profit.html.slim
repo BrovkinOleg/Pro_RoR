@@ -1,7 +1,5 @@
 
 - if profit&.persisted?
-  - if current_user&.author?(profit)
-    p
-      = profit.name
-      - if profit.image.attached?
-        = image_tag url_for(profit.image)
+  = profit.name
+  - if profit.image.attached?
+    = image_tag url_for(profit.image)

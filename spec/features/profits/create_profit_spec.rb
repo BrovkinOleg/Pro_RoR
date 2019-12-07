@@ -21,10 +21,15 @@ feature 'User can add profits to new question' do
 
     scenario 'add profits to new question with name and image' do
       fill_in 'Profit_name', with: 'Your_profit'
+      attach_file 'question[profit_attributes][image]', "#{Rails.root}/app/assets/images/Badge_01.png"
       click_on 'Ask'
 
       expect(page).to have_content 'add_profit'
       expect(page).to have_content 'Your question successfully created.'
+      within '.profits' do
+        expect(page).to have_content 'Your_profit'
+        expect(page).to have_css('img')
+      end
     end
   end
 end
