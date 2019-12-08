@@ -10,8 +10,9 @@ feature 'User can add links to answer' do
     background do
       sign_in(user)
       visit question_path(question)
-      click_on 'add link'
       fill_in 'Add your answer', with: 'my_answer'
+      click_on 'add link'
+
       fill_in 'Link name', with: 'url_one'
       fill_in 'Url', with: url
       click_on 'Create answer'

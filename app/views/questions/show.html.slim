@@ -1,7 +1,8 @@
 = render 'shared/errors', local: true, remote: true, resource: @question
 
 .profits
-  = render 'profits/profit', profit: @question.profit
+  - if !@question.profit.nil?
+    = render 'profits/profit', profit: @question.profit
 
 h2 = @question.title
 h3 = @question.body

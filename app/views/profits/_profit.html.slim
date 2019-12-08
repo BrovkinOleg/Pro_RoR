@@ -1,5 +1,4 @@
 
-- if profit&.persisted?
-  = profit.name
-  - if profit.image.attached?
-    = image_tag url_for(profit.image)
+= profit.name
+- if profit.image.attached?
+  = image_tag url_for(profit.image)

@@ -11,10 +11,8 @@
 
    describe 'public methods' do
      describe '#gist?' do
-       let(:user) { create(:user) }
-       let(:question) { create(:question, user: user) }
-       let(:link) { create(:link, linkable: question) }
-       let(:gist) { create(:link, :gist, linkable: question) }
+       let(:gist) { build(:link, :gist) }
+       let(:link) { build(:link) }
 
        it 'check gist to gist' do
          expect(gist).to be_gist

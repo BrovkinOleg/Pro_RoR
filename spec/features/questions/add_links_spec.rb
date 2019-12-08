@@ -31,8 +31,6 @@
        end
        click_on 'Ask'
 
-       expect(page).to have_content 'Test question'
-       expect(page).to have_link 'url_one', href: url_one
        expect(page).to have_link 'url_two', href: url_two
      end
 
