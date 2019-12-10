@@ -6,14 +6,14 @@ module Voted
   end
 
   def vote_up
-    return head 403 if current_user&.author_of?(@resource)
+    return head 403 if current_user&.author?(@resource)
 
     @resource.upvote!(current_user)
     render_json(@resource)
   end
 
   def vote_down
-    return head 403 if current_user&.author_of?(@resource)
+    return head 403 if current_user&.author?(@resource)
 
     @resource.downvote!(current_user)
     render_json(@resource)
