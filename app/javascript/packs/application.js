@@ -10,6 +10,7 @@ require("channels");
 require("jquery");
 require("custom/answers.js");
 require("custom/questions.js");
+require("custom/votes.js")
 require("custom/direct_uploads.js");
 require("custom/async-gists");
 import 'cocoon-js';

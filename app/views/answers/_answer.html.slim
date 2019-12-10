@@ -3,6 +3,9 @@ div id = "answer_#{answer.id}"
   - if answer.best?
     h4 = 'This answer is the best!'
 
+  - if !current_user&.author?(question) && current_user
+    = render 'shared/votes', resource: answer
+
   .links
     = render 'shared/attached_links', resource: answer
 

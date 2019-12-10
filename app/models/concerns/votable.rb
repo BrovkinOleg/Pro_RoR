@@ -5,21 +5,27 @@ module Votable
     has_many :votes, dependent: :destroy, as: :votable
   end
 
-  def upvote!(user)
+  def vote_plus(user)
     transaction do
-      votes.where(user_id: user).delete_all
+      remove_all_votes(user)
       votes.create!(user: user, value: 1)
     end
   end
 
-  def downvote!(user)
+  def vote_minus(user)
     transaction do
-      votes.where(user_id: user).delete_all
+      remove_all_votes(user)
       votes.create!(user: user, value: -1)
     end
   end
 
   def total_votes
     votes.sum(:value)
+  end
+
+  private
+
+  def remove_all_votes(user)
+    votes.where(user_id: user).delete_all
   end
 end
