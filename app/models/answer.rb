@@ -1,7 +1,6 @@
 
 class Answer < ApplicationRecord
   include LinksAssociations
-  include ModelLinks
   include ModelVoted
 
   belongs_to :question
