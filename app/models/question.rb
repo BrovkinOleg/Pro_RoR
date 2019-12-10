@@ -1,6 +1,8 @@
 
 class Question < ApplicationRecord
   include LinksAssociations
+  include ModelLinks
+  include ModelVoted
 
   has_many :answers, dependent: :destroy
   has_one :profit, dependent: :destroy

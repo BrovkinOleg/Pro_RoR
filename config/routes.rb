@@ -10,6 +10,13 @@ Rails.application.routes.draw do
 
   resources :profits, only: :index
 
+  concern :votable do
+    member do
+      post 'vote_up'
+      post 'vote_down'
+    end
+  end
+
   root to: 'questions#index'
 
 end
