@@ -4,21 +4,18 @@ Rails.application.routes.draw do
 
   concern :votable do
     member do
-      post 'vote_up'
-      post 'vote_down'
+      post :vote_up, :vote_down
     end
   end
 
   resources :questions, concerns: :votable do
-    resources :answers, concerns: :votable, except: [:index] do
+    resources :answers, concerns: :votable, shallow: true, except: [:index] do
       patch "best_answer", on: :member, as: :best
     end
   end
 
   resources :attachments, only: :destroy
-
   resources :profits, only: :index
-
   root to: 'questions#index'
 
 end

@@ -1,8 +1,11 @@
+
 .vote
-  b Vote
-  p
-    = button_to  'vote_up', polymorphic_url([:vote_up, resource]),
+  / = button_to  'Like', polymorphic_url([:vote_up, resource]),
+  = button_to  'Like', polymorphic_url(resource, action: :vote_up),
+            class: 'vote_up',
             method: :post, remote: true, data: { type: :json }
-  p
-    = button_to  'vote_down', polymorphic_url([:vote_down, resource]),
+
+  = button_to  'Dislike', polymorphic_url(resource, action: :vote_down),
+            class: 'vote_down',
             method: :post, remote: true, data: { type: :json }
+.votes

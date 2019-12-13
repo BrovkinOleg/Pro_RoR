@@ -30,7 +30,7 @@ module Voted
   end
 
   def render_json(resource)
-    resource_class = resource.class.name.downcase + 's'
-    render json: { resource_class: resource_class, resource: resource.id, votes: resource.total_votes }
+    resource_class = resource.class.name.downcase
+    render json: { resource_class: resource_class, resource: @resource.id, votes: @resource.total_votes }
   end
 end
