@@ -42,11 +42,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'launchy'
 
-  # gem 'rspec-rails', '~> 3.8'
+  #gem 'rspec-rails', '~> 3.8'
   %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
     gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'master'
   end
-
 end
 
 group :development do

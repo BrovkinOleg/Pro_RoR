@@ -1,6 +1,5 @@
 
 .vote
-  / = button_to  'Like', polymorphic_url([:vote_up, resource]),
   = button_to  'Like', polymorphic_url(resource, action: :vote_up),
             class: 'vote_up',
             method: :post, remote: true, data: { type: :json }

@@ -4,8 +4,8 @@ div id = "answer_#{answer.id}"
     h4 = 'This answer is the best!'
 
   b Answer Vote
-  / - if !current_user&.author?(answer) && current_user
-  = render 'shared/votes', resource: answer
+  - if !current_user&.author?(answer) && current_user
+    = render 'shared/votes', resource: answer
 
   .links
     = render 'shared/attached_links', resource: answer
@@ -13,11 +13,11 @@ div id = "answer_#{answer.id}"
   - if current_user&.author?(answer)
     table
       tr
-        td = link_to 'Delete', answer_path(@question, answer), id: "delete-answer_#{answer.id}", \
+        td = link_to 'Delete', answer_path(answer), id: "delete-answer_#{answer.id}", \
              remote: true, method: :delete
         td = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
         - if current_user&.author?(@question) && !answer.best?
-          td = link_to 'Best answer', best_answer_path(@question, answer), method: :patch, remote: true
+          td = link_to 'Best answer', best_answer_path(answer), method: :patch, remote: true
 
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
     p

@@ -30,8 +30,8 @@ feature 'Delete Answer' do
     scenario 'author delete his answer' do
 
       expect(page).to have_content answer.body
-      click_on 'Delete'
 
+      click_on 'Delete'
       expect(page).to have_no_content answer.body
     end
 

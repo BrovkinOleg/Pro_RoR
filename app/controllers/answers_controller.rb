@@ -2,11 +2,11 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: :create
   before_action :load_answer, only: [:edit, :update, :destroy, :best_answer]
+  before_action :load_question
 
   def new
-    @answer = @question.answers.new
+    @answer = Answer.new
   end
 
   def create
@@ -31,7 +31,7 @@ class AnswersController < ApplicationController
   private
 
   def load_question
-    @question ||= Question.with_attached_files.find(params[:question_id])
+    @question ||= params[:question_id] ? Question.find(params[:question_id]) : load_answer.question
   end
 
   def load_answer

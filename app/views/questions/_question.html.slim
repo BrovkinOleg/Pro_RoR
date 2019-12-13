@@ -5,8 +5,8 @@ div id = "question_#{question.id}"
       = render 'shared/attached_links', resource: question
 
     b Question Vote
-    / - if !current_user&.author?(question) && current_user
-    = render 'shared/votes', resource: question
+    - if !current_user&.author?(question) && current_user
+      = render 'shared/votes', resource: question
 
     - if current_user&.author?(question)
       p = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
