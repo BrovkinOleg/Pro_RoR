@@ -6,10 +6,8 @@ shared_examples_for Voted do
       before { sign_in(new_user) }
 
       it 'create vote up' do
-        expect do
-          post :vote_up, params:
-            { id: votable, format: :json }
-        end .to change(votable.votes, :count).by(1)
+        expect { post :vote_up, params: { id: votable, format: :json } }.to \
+                change(votable.votes, :count).by(1)
       end
 
       it 'returns valid json for vote up' do
