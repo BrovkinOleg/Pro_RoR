@@ -3,6 +3,13 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
+  it_behaves_like Voted do
+    let(:new_user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let(:votable) { create(:answer, question: question, user: user) }
+  end
+
+
   let(:user) { create :user }
   let(:new_user) { create :user }
   let(:question) { create :question, user: user }
