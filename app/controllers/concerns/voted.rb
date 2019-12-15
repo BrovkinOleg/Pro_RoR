@@ -8,14 +8,14 @@ module Voted
   def vote_up
     return head 403 if current_user&.author?(@resource)
 
-    @resource.vote_plus(current_user)
+    @resource.vote_up(current_user)
     render_json(@resource)
   end
 
   def vote_down
     return head 403 if current_user&.author?(@resource)
 
-    @resource.vote_minus(current_user)
+    @resource.vote_down(current_user)
     render_json(@resource)
   end
 
