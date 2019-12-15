@@ -17,39 +17,39 @@ feature 'User can give vote to question' do
         click_on 'Like'
 
         expect(page).to have_content 'Total votes:1'
-        click_on 'Sign out'
+        using_session :new_session do
+          sign_in(third_user)
+          visit questions_path
+          click_on 'Like'
 
-        sign_in(third_user)
-        visit questions_path
-        click_on 'Like'
-
-        expect(page).to have_content 'Total votes:2'
+          expect(page).to have_content 'Total votes:2'
+        end
       end
 
       scenario 'First user press Dislike and second user press Like' do
         click_on 'Dislike'
 
         expect(page).to have_content 'Total votes:-1'
-        click_on 'Sign out'
+        using_session :new_session do
+          sign_in third_user
+          visit questions_path
+          click_on 'Like'
 
-        sign_in third_user
-        visit questions_path
-        click_on 'Like'
-
-        expect(page).to have_content 'Total votes:0'
+          expect(page).to have_content 'Total votes:0'
+        end
       end
 
       scenario 'First user press Dislike and second user press Dislike' do
         click_on 'Dislike'
 
         expect(page).to have_content 'Total votes:-1'
-        click_on 'Sign out'
+        using_session :new_session do
+          sign_in(third_user)
+          visit questions_path
+          click_on 'Dislike'
 
-        sign_in(third_user)
-        visit questions_path
-        click_on 'Dislike'
-
-        expect(page).to have_content 'Total votes:-2'
+          expect(page).to have_content 'Total votes:-2'
+        end
       end
 
       scenario 'can give only one vote' do
