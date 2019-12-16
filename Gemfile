@@ -28,6 +28,9 @@ gem 'cocoon'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# gem for push data from controllers to js files
+gem 'gon'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -41,6 +44,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'launchy'
+  # gem for testing channels
+  gem 'action-cable-testing'
 
   #gem 'rspec-rails', '~> 3.8'
   %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
