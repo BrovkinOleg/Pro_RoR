@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
+  after_action :publish_question, only: :create
 
   def index
     @questions = Question.all
@@ -11,6 +12,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answer.links.new
+    gon.question_id = @question.id
   end
 
   def edit; end
@@ -24,6 +26,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(question_params)
     if @question.save
+      gon.question_id = @question.id
       redirect_to @question, notice: 'Your question successfully created.'
     else
       flash[:notice] = "You must fill all fields."
@@ -46,6 +49,12 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast('questions_channel', @question.to_json)
+  end
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
