@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_commentable, only: :create
+  before_action :load_resource, only: :create
   after_action :publish_comment, only: :create
 
   def create
@@ -11,8 +11,9 @@ class CommentsController < ApplicationController
 
   private
 
-  def load_commentable
-    resource, id = request.path.split('/')[1, 2]
+  def load_resource
+    resource = request.path.split('/')[1]
+    id = request.path.split('/')[2]
     @commentable = resource.singularize.classify.constantize.find(id)
   end
 
@@ -25,9 +26,6 @@ class CommentsController < ApplicationController
 
     question_id = params['question_id'] || @comment.commentable.question_id
 
-    ActionCable.server.broadcast(
-      "questions/#{question_id}/comments",
-      @comment.to_json
-    )
+    ActionCable.server.broadcast("questions/#{question_id}/comments", @comment.to_json)
   end
 end

@@ -2,6 +2,7 @@
 class Question < ApplicationRecord
   include LinksAssociations
   include Votable
+  include HasComments
 
   has_many :answers, dependent: :destroy
   has_one :profit, dependent: :destroy

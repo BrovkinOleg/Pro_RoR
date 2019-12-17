@@ -2,6 +2,7 @@
 class Answer < ApplicationRecord
   include LinksAssociations
   include Votable
+  include HasComments
 
   belongs_to :question
   belongs_to :user
