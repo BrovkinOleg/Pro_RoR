@@ -155,6 +155,18 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
+    context 'with broadcasting' do
+      before { sign_in(user) }
+
+      it 'broadcasts to question channel' do
+        expect do
+          post :create, params: {
+            question: attributes_for(:question)
+          }
+        end .to have_broadcasted_to('questions_channel')
+      end
+    end
+
     context 'Unregistered user' do
 
       it 'does not save question' do

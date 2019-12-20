@@ -86,6 +86,19 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to render_template :create
         end
       end
+
+      context 'with broadcasting' do
+        before { sign_in(user) }
+
+        it 'broadcasts to answer channel' do
+          expect do
+            post :create, params: {
+              answer: attributes_for(:answer),
+              question_id: question
+            }, format: :js
+          end .to have_broadcasted_to("questions/#{question.id}/answers")
+        end
+      end
     end
   end
 
