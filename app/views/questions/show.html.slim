@@ -3,8 +3,12 @@
 .profits
   = render 'profits/profit', profit: @question.profit if @question.profit
 
-h2 = @question.title
-h3 = @question.body
+div id = "question_#{@question.id}"
+  h2 = @question.title
+  h3 = @question.body
+  div id = "comments_question_#{@question.id}"
+    = render @question.comments
+    = render 'comments/form', commentable: @question
 
 = render 'shared/attached_files', resource: @question
 

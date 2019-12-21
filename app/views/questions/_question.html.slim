@@ -1,9 +1,5 @@
 div id = "question_#{question.id}"
   hr
-  div id = "comments_question_#{question.id}"
-    = render question.comments
-    = render 'comments/form', commentable: question
-
   = link_to question.title, question_path(question)
   .links
     = render 'shared/attached_links', resource: question

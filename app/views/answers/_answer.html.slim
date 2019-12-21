@@ -1,4 +1,5 @@
-div id = "answer_#{answer.id}"
+
+div id = "answer_#{answer.id}" class="answer"
   p = answer.body
   div id = "comments_answer_#{answer.id}"
     = render answer.comments

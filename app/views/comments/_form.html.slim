@@ -5,8 +5,8 @@
 div class = "#{class_name}-#{id}-comment-errors"
   = render 'shared/errors', resource: commentable
 
-= form_with model: [commentable, Comment.new], class: 'hidden',
-            html: { id: "#{class_name}-#{id}-comment" }, remote: true do |f|
+= form_with model: [commentable, Comment.new], class: 'hidden', \
+             html: { id: "#{class_name}-#{id}-comment" }, remote: true do |f|
   p
     = f.label :body
     = f.text_area :body
@@ -14,6 +14,5 @@ div class = "#{class_name}-#{id}-comment-errors"
     = f.submit 'create comment'
 
 - if current_user.present?
-  p = link_to "Add comment to that #{class_name}", '#',
-              class: 'create-comment-link',
-              data: { commentable_id: id, commentable_type: class_name }
+  p = link_to "Add comment to that #{class_name}", '#', class: 'create-comment-link', \
+               data: { commentable_id: id, commentable_type: class_name }
