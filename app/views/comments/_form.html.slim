@@ -1,12 +1,9 @@
 
-- class_name = commentable.class.name.downcase
-- id = commentable.id
-
-div class = "#{class_name}-#{id}-comment-errors"
+div class = "#{commentable.class.name.downcase}-#{commentable.id}-comment-errors"
   = render 'shared/errors', resource: commentable
 
 = form_with model: [commentable, Comment.new], class: 'hidden', \
-             html: { id: "#{class_name}-#{id}-comment" }, remote: true do |f|
+             html: { id: "#{commentable.class.name.downcase}-#{commentable.id}-comment" }, remote: true do |f|
   p
     = f.label :body
     = f.text_area :body
@@ -14,5 +11,5 @@ div class = "#{class_name}-#{id}-comment-errors"
     = f.submit 'create comment'
 
 - if current_user.present?
-  p = link_to "Add comment to that #{class_name}", '#', class: 'create-comment-link', \
-               data: { commentable_id: id, commentable_type: class_name }
+  p = link_to "Add comment to that #{commentable.class.name.downcase}", '#', class: 'create-comment-link', \
+               data: { commentable_id: commentable.id, commentable_type: commentable.class.name.downcase }

@@ -20,6 +20,11 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'Unregistered user' do
 
+      it 'can not broadcasts to answer channel' do
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to_not \
+                 have_broadcasted_to("questions/#{question.id}/answers")
+      end
+
       it 'does not create answer' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to_not \
           change(question.answers, :count)
@@ -34,6 +39,11 @@ RSpec.describe AnswersController, type: :controller do
     context 'Registered user' do
       before { sign_in(user) }
       context 'with valid attributes' do
+
+        it 'can broadcasts to answer channel' do
+          expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to \
+                   have_broadcasted_to("questions/#{question.id}/answers")
+        end
 
         it 'saves the new answer to database' do
           expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to \
@@ -76,6 +86,11 @@ RSpec.describe AnswersController, type: :controller do
       context 'with invalid attributes' do
       let!(:answers) { create_list(:answer, 2, body: 'text', question: question, user: user) }
 
+        it 'can not broadcasts to answer channel' do
+          expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js }.to_not \
+                   have_broadcasted_to("questions/#{question.id}/answers")
+        end
+
         it 'does not save the question' do
           expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, \
           format: :js }.to_not change(Answer, :count)
@@ -84,19 +99,6 @@ RSpec.describe AnswersController, type: :controller do
         it 'renders template :create' do
           post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js
           expect(response).to render_template :create
-        end
-      end
-
-      context 'with broadcasting' do
-        before { sign_in(user) }
-
-        it 'broadcasts to answer channel' do
-          expect do
-            post :create, params: {
-              answer: attributes_for(:answer),
-              question_id: question
-            }, format: :js
-          end .to have_broadcasted_to("questions/#{question.id}/answers")
         end
       end
     end
