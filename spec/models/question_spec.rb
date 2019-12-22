@@ -11,6 +11,7 @@ RSpec.describe Question, type: :model do
     let(:votable) { create(:question, user: user) }
   end
 
+  it { should have_many(:comments).dependent(:destroy) }
   it { should have_many(:answers).dependent(:destroy) }
   it { should belong_to(:user) }
 
