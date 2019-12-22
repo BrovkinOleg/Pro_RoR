@@ -108,6 +108,11 @@ RSpec.describe QuestionsController, type: :controller do
       before { sign_in(user) }
       context 'with valid attributes' do
 
+        it 'can broadcasts to question channel' do
+          expect { post :create, params: { question: attributes_for(:question) } }.to \
+                 have_broadcasted_to('questions_channel')
+        end
+
         it 'save a new question to database' do
           expect { post :create, params: { question: attributes_for(:question) } }.to \
                 change(Question, :count).by(1)
@@ -144,6 +149,11 @@ RSpec.describe QuestionsController, type: :controller do
 
       context 'with invalid attributes' do
 
+        it 'can not broadcasts to question channel' do
+          expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not \
+                 have_broadcasted_to('questions_channel')
+        end
+
         it 'does not save question' do
           expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
         end
@@ -155,19 +165,12 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'with broadcasting' do
-      before { sign_in(user) }
-
-      it 'broadcasts to question channel' do
-        expect do
-          post :create, params: {
-            question: attributes_for(:question)
-          }
-        end .to have_broadcasted_to('questions_channel')
-      end
-    end
-
     context 'Unregistered user' do
+
+      it 'can not broadcasts to question channel' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to_not \
+                 have_broadcasted_to('questions_channel')
+      end
 
       it 'does not save question' do
         expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
