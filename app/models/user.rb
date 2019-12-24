@@ -21,10 +21,10 @@ class User < ApplicationRecord
 
   def self.find_or_create(email)
     user = User.find_by(email: email)
-    user || create_user_with_rand_password!(email)
+    user || random_user!(email)
   end
 
-  def self.create_user_with_rand_password!(email)
+  def self.random_user!(email)
     password = Devise.friendly_token[0, 20]
     User.create!(email: email, password: password, password_confirmation: password)
   end

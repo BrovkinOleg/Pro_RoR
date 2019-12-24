@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2019_12_24_130058) do
     t.string "uid", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", unique: true
+    t.index %w(provider uid), name: "index_authorizations_on_provider_and_uid", unique: true
     t.index ["user_id"], name: "index_authorizations_on_user_id"
   end
 
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2019_12_24_130058) do
     t.bigint "commentable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index %w(commentable_type commentable_id), name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
