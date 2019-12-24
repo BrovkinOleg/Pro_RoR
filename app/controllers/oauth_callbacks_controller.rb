@@ -1,10 +1,16 @@
 class OauthCallbacksController < Devise::OmniauthCallbacksController
-  before_action :set_auth, :set_email, only: %i[github vkontakte]
+  before_action :set_auth, :set_email, only: [:github, :vkontakte]
 
   def github
-    return render 'shared/email' unless @email
+    @user = User.find_for_oauth(request.env['omniauth.auth'], request.env['omniauth.email'])
+    if @user.persisted?
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :succsess, kind: 'GitHub') if is_navigational_format?
+    end
 
-    sing_in_provider(@auth, @email)
+    #return render 'shared/email' unless @email
+    #
+    #sing_in_provider(@auth, @email)
   end
 
   def vkontakte
