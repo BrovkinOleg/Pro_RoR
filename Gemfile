@@ -33,6 +33,9 @@ gem 'gon'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-vkontakte'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -46,7 +49,8 @@ group :development, :test do
   gem 'launchy'
   # gem for testing channels
   gem 'action-cable-testing'
-
+  # dem for test letters
+  gem 'letter_opener', '~> 1.7'
   #gem 'rspec-rails', '~> 3.8'
   %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
     gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'master'
@@ -70,6 +74,7 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
+  gem 'capybara-email', '~> 3.0', '>= 3.0.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
