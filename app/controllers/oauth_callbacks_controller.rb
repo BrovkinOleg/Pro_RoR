@@ -16,7 +16,6 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
   def fill_email
     session[:email] = params[:email]
     user = User.find_or_create(params[:email])
-    byebug
     confirmed_message(user)
   end
 
