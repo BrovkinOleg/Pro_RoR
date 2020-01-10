@@ -1,9 +1,6 @@
 require 'rails_helper'
 
-feature 'User can sign up (register)', %q{
-  In order to be able to ask a question
-  User must be able sign up (register)
-} do
+feature 'User can sign up (register)' do
 
   given(:user) { create :user }
 
@@ -13,10 +10,11 @@ feature 'User can sign up (register)', %q{
     fill_in 'Password', with: 'qwerty123'
     fill_in 'Password confirmation', with: 'qwerty123'
     click_on 'Sign up'
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
 
-    visit new_user_session_path
-    expect(current_path).to eq root_path
+    open_email 'test_sign_up@test.com'
+
+    current_email.click_link 'Confirm my account'
+    expect(page).to have_content 'Your email address has been successfully confirmed'
   end
 
   scenario 'Registered user try to sign up' do
