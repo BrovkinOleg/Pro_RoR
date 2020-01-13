@@ -5,10 +5,12 @@ div id = "question_#{question.id}"
     = render 'shared/attached_links', resource: question
 
   b Question Vote
-  - if !current_user&.author?(question) && current_user
+  / - if !current_user&.author?(question) && current_user
+  - if can? :vote_up, question
     = render 'shared/votes', resource: question
 
-  - if current_user&.author?(question)
+  / - if current_user&.author?(question)
+  - if can? :update, question
     p = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
     p = link_to 'Delete question', question_path(question), method: :delete
 
