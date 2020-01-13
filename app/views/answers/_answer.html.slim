@@ -9,14 +9,13 @@ div id = "answer_#{answer.id}"
     h4 = 'This answer is the best!'
 
   b Answer Vote
-  / - if !current_user&.author?(answer) && current_user
+
   - if can? :vote_up, answer
     = render 'shared/votes', resource: answer
 
   .links
     = render 'shared/attached_links', resource: answer
 
-  / - if current_user&.author?(answer)
   - if can? :update, answer
     table
       tr
@@ -24,7 +23,6 @@ div id = "answer_#{answer.id}"
              remote: true, method: :delete
         td = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-        / - if current_user&.author?(@question) && !answer.best?
         - if can? :best_answer, answer
           - if !answer.best?
             td = link_to 'Best answer', best_answer_path(answer), method: :patch, remote: true

@@ -12,7 +12,6 @@ div id = "question_#{@question.id}"
 
 = render 'shared/attached_files', resource: @question
 
-/ - if current_user&.author?(@question)
 - if can? :destroy, @question
   = link_to 'Delete question', question_path(@question), method: :delete
 
@@ -27,7 +26,6 @@ hr
   = render 'shared/errors', resource: @answer
 hr
 
-/ - if user_signed_in?
 - if can?(:create, Question)
   = render 'questions/form'
 - else
