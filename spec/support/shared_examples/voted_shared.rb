@@ -43,29 +43,21 @@ shared_examples_for Voted do
       before { sign_in(votable.user) }
 
       it 'create vote up for author' do
-        expect do
-          post :vote_up, params:
-            { id: votable, format: :json }
-        end .to change(votable.votes, :count).by(0)
+        expect { post :vote_up, params: { id: votable, format: :json } }.to change(votable.votes, :count).by(0)
       end
 
-      it 'render head 403 for Up' do
+      it 'redirects to root path' do
         post :vote_up, params: { id: votable, format: :json }
-
-        expect(response).to have_http_status 403
+        expect(response).to redirect_to root_path
       end
 
       it 'create vote down for author' do
-        expect do
-          post :vote_down, params:
-            { id: votable, format: :json }
-        end .to change(votable.votes, :count).by(0)
+        expect { post :vote_down, params: { id: votable, format: :json } }.to change(votable.votes, :count).by(0)
       end
 
-      it 'render head 403 for down' do
+      it 'redirects to root path' do
         post :vote_down, params: { id: votable, format: :json }
-
-        expect(response).to have_http_status 403
+        expect(response).to redirect_to root_path
       end
     end
 

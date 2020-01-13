@@ -151,9 +151,9 @@ RSpec.describe AnswersController, type: :controller do
                  format: :js }.to_not change(Answer, :count)
       end
 
-      it 'and renders template destroy' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: new_answer, question_id: question }, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -247,10 +247,10 @@ RSpec.describe AnswersController, type: :controller do
                    new_answer: { body: 'new body' } }, format: :js}.to_not change(new_answer.reload, :body)
         end
 
-        it 'renders template update' do
+        it 'redirects to root_path' do
           patch :update, params: { id: new_answer, question_id: question,
                  new_answer: { body: 'new body' } }, format: :js
-          expect(response).to render_template :update
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -261,25 +261,25 @@ RSpec.describe AnswersController, type: :controller do
       before { sign_in(user) }
 
       it 'can set best_answer' do
-        patch :best_answer, params: { id: answer, question_id: question,
-             answer: { best: true } }, format: :js
-        answer.reload
+        patch :best_answer, params: { id: new_answer, question_id: question, user_id: user,
+              answer: { best: true } }, format: :js
+        new_answer.reload
 
-        expect(answer).to be_best
+        expect(new_answer).to be_best
       end
 
       it 'sets profits to user' do
-        patch :best_answer, params: { id: answer, question_id: question,
-             answer: { best: true } }, format: :js
-        answer.reload
+        patch :best_answer, params: { id: new_answer, question_id: question,
+              new_answer: { best: true } }, format: :js
+        new_answer.reload
         profit.reload
 
-        expect(answer.user).to eq profit.user
+        expect(new_answer.user).to eq profit.user
       end
 
       it 'renders best_answer view' do
-        patch :best_answer, params: { id: answer, question_id: question,
-              answer: { best: true } }, format: :js
+        patch :best_answer, params: { id: new_answer, question_id: question, user_id: user,
+                                      new_answer: { best: true } }, format: :js
 
         expect(response).to render_template :best_answer
       end
@@ -298,10 +298,10 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders template best_answer' do
         patch :best_answer, params: { id: answer, question_id: question,
-               answer: { best: true } }, format: :js
+             answer: { best: true } }, format: :js
         answer.reload
 
-        expect(response).to render_template :best_answer
+        expect(response).to redirect_to root_path
       end
     end
 

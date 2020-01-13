@@ -19,30 +19,30 @@ class Ability
     can :read, [Question, Profit]
     can :create, [Question, Answer, Comment]
 
-    can [:update, :destroy], [Question, Answer], { user: @user }
-    #can [:update, :destroy], [Question, Answer] do |resource|
-    #  user.author?(resource)
-    #end
+    #can [:update, :destroy], [Question, Answer], { user: @user }
+    can [:update, :destroy], [Question, Answer] do |resource|
+      user.author?(resource)
+    end
 
-    can [:vote_up, :vote_down], [Question, Answer], { user: !@user }
-    #can [:vote_up, :vote_down], [Question, Answer] do |votable|
-    #  !user.author?(votable)
-    #end
+    #can [:vote_up, :vote_down], [Question, Answer], { user: !@user }
+    can [:vote_up, :vote_down], [Question, Answer] do |votable|
+      !user.author?(votable)
+    end
 
-    can :destroy, ActiveStorage::Attachment, { user: @user }
-    #can :destroy, ActiveStorage::Attachment do |att|
-    #  user.author?(att.record)
-    #end
+    #can :destroy, ActiveStorage::Attachment, { user: @user }
+    can :destroy, ActiveStorage::Attachment do |att|
+      user.author?(att.record)
+    end
 
-    can :destroy, Link, { user: @user }
-    #can :destroy, Link do |link|
-    #  user.author?(link.linkable)
-    #end
+    #can :destroy, Link, { user: @user }
+    can :destroy, Link do |link|
+      user.author?(link.linkable)
+    end
 
-    can :best_answer, Answer, { user: !@user }
-    #can :best_answer, Answer do |answer|
-    #  !user.author?(answer) && user.author?(answer.question)
-    #end
+    #can :best_answer, Answer, { user: !@user }
+    can :best_answer, Answer do |answer|
+      !user.author?(answer) && user.author?(answer.question)
+    end
   end
 
   def guest_abilities

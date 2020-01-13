@@ -17,7 +17,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    authorize! :update, answer
+    authorize! :update, @answer
     @answer.update(answer_params)
     @question = @answer.question
   end
@@ -25,12 +25,12 @@ class AnswersController < ApplicationController
   def edit; end
 
   def destroy
-    authorize! :destroy, answer
+    authorize! :destroy, @answer
     @answer.destroy
   end
 
   def best_answer
-    authorize! :best_answer, answer
+    authorize! :best_answer, @answer
     @answer.best_answer!
   end
 
