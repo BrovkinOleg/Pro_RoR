@@ -11,6 +11,7 @@ feature 'Delete question', js: true do
     visit question_path(question)
     expect(page).to have_content question.title
     click_on 'Delete question'
+
     expect(page).to have_content 'You question successfully deleted.'
     expect(page).to have_no_content question.title
     expect(current_path).to eq questions_path
@@ -19,11 +20,13 @@ feature 'Delete question', js: true do
   scenario 'authorized user can not delete not his question' do
     sign_in(another_user)
     visit question_path(question)
+
     expect(page).to have_no_link 'Delete question'
   end
 
   scenario 'non-authorized user can not delete any question' do
     visit question_path(question)
+
     expect(page).to have_no_link 'Delete question'
   end
 end

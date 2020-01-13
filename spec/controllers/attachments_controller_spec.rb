@@ -34,7 +34,7 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'can not delete file' do
         expect { delete :destroy, params: { id: second_question.files[0] }, format: :js }.not_to \
         change(second_question.files, :count)
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 

@@ -13,7 +13,7 @@ div id = "question_#{@question.id}"
 = render 'shared/attached_files', resource: @question
 
 / - if current_user&.author?(@question)
-- if can? :destroy, Question
+- if can? :destroy, @question
   = link_to 'Delete question', question_path(@question), method: :delete
 
 .links
