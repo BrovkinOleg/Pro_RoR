@@ -6,6 +6,7 @@ module Voted
   end
 
   def vote_up
+    authorize! :vote_up, @resource
     return head 403 if current_user&.author?(@resource)
 
     @resource.vote_up(current_user)
@@ -13,6 +14,7 @@ module Voted
   end
 
   def vote_down
+    authorize! :vote_down, @resource
     return head 403 if current_user&.author?(@resource)
 
     @resource.vote_down(current_user)

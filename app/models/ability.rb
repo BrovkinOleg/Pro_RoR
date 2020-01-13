@@ -16,15 +16,14 @@ class Ability
   end
 
   def user_abilities
-    can :read, [Question, Trophy]
-
+    can :read, [Question, Profit]
     can :create, [Question, Answer, Comment]
 
-    can %i[update destroy], [Question, Answer] do |resource|
+    can [:update, :destroy], [Question, Answer] do |resource|
       user.author?(resource)
     end
 
-    can %i[vote_up vote_down], [Question, Answer] do |votable|
+    can [:vote_up, :vote_down], [Question, Answer] do |votable|
       !user.author?(votable)
     end
 
@@ -36,12 +35,12 @@ class Ability
       user.author?(link.linkable)
     end
 
-    can :make_best, Answer do |answer|
+    can :best_answer, Answer do |answer|
       !user.author?(answer) && user.author?(answer.question)
     end
   end
 
   def guest_abilities
-    can :read, Question
+    can :read, [Question, Answer]
   end
 end
