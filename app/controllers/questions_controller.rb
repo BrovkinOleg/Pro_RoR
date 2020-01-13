@@ -37,12 +37,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    authorize! :update, question
+    authorize! :update, @question
     @question.update(question_params)
   end
 
   def destroy
-    authorize! :destroy, question
+    authorize! :destroy, @question
     @question.destroy
     redirect_to questions_path, notice: 'You question successfully deleted.'
   end

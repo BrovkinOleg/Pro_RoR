@@ -205,9 +205,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
 
-      it 'redirects to index' do
+      it 'redirects to root_path' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -219,6 +219,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 'deletes the question' do
         expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
       end
+
+      #it 'redirects to root_path' do
+      #  delete :destroy, params: { id: question }
+      #  expect(response).to redirect_to root_path
+      #end
 
       it 'redirects to index' do
         delete :destroy, params: { id: question }
@@ -261,7 +266,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to question_path' do
         patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
-        expect(response).to redirect_to question
+        expect(response).to redirect_to root_path
+        #expect(response).to redirect_to question
       end
     end
 
