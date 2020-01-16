@@ -1,19 +1,17 @@
 require 'rails_helper'
 
 describe 'Profiles API', type: :request do
-  let(:headers) do
-    { 'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json' }
-  end
+  let(:headers) { { 'CONTENT_TYPE' => 'application/json',
+                    'ACCEPT' => 'application/json' } }
 
   describe 'GET /api/v1/profiles/me' do
     let(:api_path) { '/api/v1/profiles/me' }
 
-    it_behaves_like 'API Authorizable' do
+    it_behaves_like 'API Authorisable' do
       let(:method) { :get }
     end
 
-    context 'authorazed' do
+    context 'authorised' do
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 

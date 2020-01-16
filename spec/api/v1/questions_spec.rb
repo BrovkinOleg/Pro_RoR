@@ -1,19 +1,17 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:headers) do
-    { 'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json' }
-  end
+  let(:headers) { { 'CONTENT_TYPE' => 'application/json',
+                    'ACCEPT' => 'application/json' } }
 
   describe 'GET /api/v1/questions' do
     let(:api_path) { '/api/v1/questions' }
 
-    it_behaves_like 'API Authorizable' do
+    it_behaves_like 'API Authorisable' do
       let(:method) { :get }
     end
 
-    context 'authorazed' do
+    context 'authorised' do
       let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }

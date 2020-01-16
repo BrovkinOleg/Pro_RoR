@@ -20,6 +20,18 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: :index do
+        get :me, on: :collection
+      end
+      resources :questions, except: %i[new edit] do
+        get :answers, on: :member
+        resources :answers, shallow: true, except: %i[new edit index]
+      end
+    end
+  end
+
   resources :attachments, only: :destroy
   resources :profits, only: :index
   root to: 'questions#index'

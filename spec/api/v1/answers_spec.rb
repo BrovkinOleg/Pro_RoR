@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 describe 'Answers API', type: :request do
-  let(:headers) do
-    { 'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json' }
-  end
+  let(:headers) { { 'CONTENT_TYPE' => 'application/json',
+                    'ACCEPT' => 'application/json' } }
 
   describe 'GET /api/v1/answers/:id' do
     let(:answer) { create(:answer) }
@@ -12,11 +10,11 @@ describe 'Answers API', type: :request do
     let!(:link) { create(:link, linkable: answer) }
     let!(:comment) { create(:comment, commentable: answer, user: answer.user) }
 
-    it_behaves_like 'API Authorizable' do
+    it_behaves_like 'API Authorisable' do
       let(:method) { :get }
     end
 
-    context 'authorazed' do
+    context 'authorised' do
       let(:access_token) { create(:access_token) }
       let(:answer_response) { json['answer'] }
 
