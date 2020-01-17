@@ -47,7 +47,6 @@ gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
-#gem 'json_spec'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

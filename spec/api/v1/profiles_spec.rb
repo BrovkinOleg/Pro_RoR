@@ -7,14 +7,13 @@ describe 'Profiles API', type: :request do
   describe 'GET /api/v1/profiles/me' do
     let(:api_path) { '/api/v1/profiles/me' }
 
-    it_behaves_like 'API Authorisable' do
+    it_behaves_like 'API Authorizable' do
       let(:method) { :get }
     end
 
     context 'authorised' do
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
-
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it_behaves_like 'Successful response'
@@ -63,10 +62,6 @@ describe 'Profiles API', type: :request do
       %w[password encrypted_password].each do |attr|
         expect(json).to_not have_key(attr)
       end
-    end
-
-    it 'does not contain resource owner' do
-      expect(response.body).to_not include_json(me.to_json)
     end
   end
 end

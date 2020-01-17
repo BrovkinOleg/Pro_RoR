@@ -7,7 +7,7 @@ describe 'Questions API', type: :request do
   describe 'GET /api/v1/questions' do
     let(:api_path) { '/api/v1/questions' }
 
-    it_behaves_like 'API Authorisable' do
+    it_behaves_like 'API Authorizable' do
       let(:method) { :get }
     end
 
@@ -37,7 +37,7 @@ describe 'Questions API', type: :request do
         expect(question_response['user']['id']).to eq question.user.id
       end
 
-      describe 'aswers' do
+      describe 'answers' do
         let(:answer) { answers.first }
         let(:answer_response) { question_response['answers'].first }
 
