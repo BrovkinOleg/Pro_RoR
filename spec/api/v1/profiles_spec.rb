@@ -63,5 +63,9 @@ describe 'Profiles API', type: :request do
         expect(json).to_not have_key(attr)
       end
     end
+
+    it 'does not contain resource owner' do
+      expect(response.body).to_not include(me.to_json)
+    end
   end
 end

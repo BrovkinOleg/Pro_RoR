@@ -62,47 +62,47 @@ describe 'Answers API', type: :request do
     end
   end
 
-  describe 'POST api/v1/questions/:question_id/answers' do
-    let(:question) { create(:question, user: user) }
-    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
-
-    it_behaves_like 'API Authorizable with attributes' do
-      let(:method) { :post }
-      let(:factory) { :answer }
-    end
-
-    context 'authorized' do
-      let(:access_token) { create(:access_token) }
-      let(:answer) { create(:answer, question: question, user: user) }
-      before { get api_path, params: { access_token: access_token.token }, headers: headers }
-
-      it_behaves_like 'Successful response'
-
-      it_behaves_like 'Creatable object' do
-        let(:object) { create(:answer, question: question, user: user) }
-        let(:method) { :post }
-        let(:valid_attributes) do
-          { params: { question_id: question.id, action: :create, format: :json,
-                      access_token: access_token.token,
-                      answer: attributes_for(:answer) } }
-        end
-        let(:valid_attributes_with_link) do
-          { params: { action: :create, format: :json, access_token: access_token.token,
-                      question_id: question, answer: { body: 'MyBody',
-                                                       links_attributes: {
-                                                         '0' => { name: 'LinkName',
-                                                                  url: 'https://www.linkexample.com/',
-                                                                  _destroy: false }
-                                                       } } } }
-        end
-        let(:invalid_attributes) do
-          { params: { question_id: question.id, action: :create, format: :json,
-                      access_token: access_token.token,
-                      answer: attributes_for(:answer, :invalid) } }
-        end
-      end
-    end
-  end
+  #describe 'POST api/v1/questions/:question_id/answers' do
+  #  let(:question) { create(:question, user: user) }
+  #  let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+  #
+  #  it_behaves_like 'API Authorizable with attributes' do
+  #    let(:method) { :post }
+  #    let(:factory) { :answer }
+  #  end
+  #
+  #  context 'authorized' do
+  #    let(:access_token) { create(:access_token) }
+  #    let(:answer) { create(:answer, question: question, user: user) }
+  #    before { get api_path, params: { access_token: access_token.token }, headers: headers }
+  #
+  #    it_behaves_like 'Successful response'
+  #
+  #    it_behaves_like 'Creatable object' do
+  #      let(:object) { create(:answer, question: question, user: user) }
+  #      let(:method) { :post }
+  #      let(:valid_attributes) do
+  #        { params: { question_id: question.id, action: :create, format: :json,
+  #                    access_token: access_token.token,
+  #                    answer: attributes_for(:answer) } }
+  #      end
+  #      let(:valid_attributes_with_link) do
+  #        { params: { action: :create, format: :json, access_token: access_token.token,
+  #                    question_id: question, answer: { body: 'MyBody',
+  #                                                     links_attributes: {
+  #                                                       '0' => { name: 'LinkName',
+  #                                                                url: 'https://www.linkexample.com/',
+  #                                                                _destroy: false }
+  #                                                     } } } }
+  #      end
+  #      let(:invalid_attributes) do
+  #        { params: { question_id: question.id, action: :create, format: :json,
+  #                    access_token: access_token.token,
+  #                    answer: attributes_for(:answer, :invalid) } }
+  #      end
+  #    end
+  #  end
+  #end
 
   describe 'PATCH /api/v1/answers/:id' do
     let!(:answer) { create(:answer, question: question, user: user) }

@@ -3,11 +3,13 @@ shared_examples_for 'API Authorizable' do
     it 'returns 401 if there is no access token' do
       do_request(method.to_sym, api_path, headers: headers)
 
+      expect(response.body.length).to eq 0
       expect(response.status).to eq 401
     end
     it 'returns 401 if access token invalid' do
       do_request(method.to_sym, api_path, params: { access_token: 'token' }, headers: headers)
 
+      expect(response.body.length).to eq 0
       expect(response.status).to eq 401
     end
   end
@@ -32,12 +34,15 @@ shared_examples_for 'API Authorizable with attributes' do
       do_request(method.to_sym, api_path, params: { action: :destroy, format: :json,
                                              factory: attributes_for(factory) })
 
+      expect(response.body.length).to eq 0
       expect(response.status).to eq 401
     end
 
     it 'returns 401 status if access_token is invalid' do
       do_request(method.to_sym, api_path, params: { action: :destroy, access_token: '1234', format: :json,
                                              factory: attributes_for(factory) })
+
+      expect(response.body.length).to eq 0
       expect(response.status).to eq 401
     end
 

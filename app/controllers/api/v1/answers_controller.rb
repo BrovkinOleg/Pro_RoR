@@ -1,10 +1,15 @@
 class Api::V1::AnswersController < Api::V1::BaseController
 
   before_action :find_answer, only: %i[show update destroy]
-  before_action :find_question, only: :create
+  before_action :find_question, only: %i[create index]
 
   def show
     render json: @answer, serializer: AnswerSerializer
+  end
+
+  def index
+    answers = @question.answers
+    render json: answers, each_serializer: AnswersSerializer
   end
 
   def create
