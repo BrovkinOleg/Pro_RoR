@@ -59,24 +59,11 @@ describe 'Answers API', type: :request do
           end
         end
       end
-
-      describe 'files' do
-        let(:attachments_response) { json['answer']['files'] }
-
-        it_behaves_like 'Returns list of objects' do
-          let(:given_response) { attachments_response }
-          let(:count) { answer.files.size }
-        end
-
-        it 'return link to file' do
-          expect(response.body).to include_json(answer.files.first.filename.to_s.to_json)
-        end
-      end
     end
   end
 
   describe 'POST api/v1/questions/:question_id/answers' do
-    let(:question) { create(:question) }
+    let(:question) { create(:question, user: user) }
     let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
 
     it_behaves_like 'API Authorizable with attributes' do
@@ -86,13 +73,13 @@ describe 'Answers API', type: :request do
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
-      let(:answer) { create(:answer) }
+      let(:answer) { create(:answer, question: question, user: user) }
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it_behaves_like 'Successful response'
 
       it_behaves_like 'Creatable object' do
-        let(:object) { create(:answer) }
+        let(:object) { create(:answer, question: question, user: user) }
         let(:method) { :post }
         let(:valid_attributes) do
           { params: { question_id: question.id, action: :create, format: :json,
@@ -118,7 +105,7 @@ describe 'Answers API', type: :request do
   end
 
   describe 'PATCH /api/v1/answers/:id' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, question: question, user: user) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable with attributes' do
@@ -157,7 +144,7 @@ describe 'Answers API', type: :request do
   end
 
   describe 'DELETE /api/v1/answers/:id' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, question: question, user: user) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable with attributes' do
