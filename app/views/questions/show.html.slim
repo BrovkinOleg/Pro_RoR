@@ -1,5 +1,8 @@
 = render 'shared/errors', local: true, remote: true, resource: @question
 
+.subscribers
+  = render 'subscribers/subscriber', question: question
+
 .profits
   = render 'profits/profit', profit: @question.profit if @question.profit
 

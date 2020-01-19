@@ -1,2 +1,9 @@
-h1 DailyDigest#digest
-p = @greeting + ", find me in app/views/daily_digest_mailer/digest.html.slim"
+
+- if @questions
+  p
+    b Daily questions list from QNA for last day
+  - @questions.each do |question|
+    p = link_to question.title, question
+- else
+  p
+    b Hello, no new questions for last day
