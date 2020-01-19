@@ -62,6 +62,37 @@ describe 'Answers API', type: :request do
     end
   end
 
+  describe 'GET /api/v1/questions/:id/answers' do
+    let(:question) { create(:question, user: user) }
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+    end
+
+    context 'authorazed' do
+      let(:access_token) { create(:access_token) }
+      let!(:question_answers) { create_list(:answer, 3, question: question, user: user) }
+      let(:answer) { question.answers.first }
+      let(:answer_response) { json['answers'].first }
+
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
+
+      it_behaves_like 'Successful response'
+
+      it_behaves_like 'Returns list of objects' do
+        let(:given_response) { json['answers'] }
+        let(:count) { 3 }
+      end
+
+      it 'returns all public fields' do
+        %w[id body user_id created_at updated_at].each do |attr|
+          expect(answer_response[attr]).to eq answer.send(attr).as_json
+        end
+      end
+    end
+  end
+
   describe 'POST api/v1/questions/:question_id/answers' do
     let(:question) { create(:question, user: user) }
     let(:api_path) { "/api/v1/questions/#{question.id}/answers" }

@@ -7,10 +7,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     render json: questions, each_serializer: QuestionsSerializer
   end
 
-  #def answers
-  #  render json: @question.answers, each_serializer: AnswersSerializer
-  #end
-
   def show
     render json: @question, serializer: QuestionSerializer
   end
