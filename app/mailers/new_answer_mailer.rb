@@ -1,5 +1,6 @@
 class NewAnswerMailer < ApplicationMailer
-  def send_mail(answer, user)
+
+  def inform(answer, user)
     @answer = answer
     @question = answer.question
 
