@@ -1,7 +1,9 @@
 class NewAnswerMailer < ApplicationMailer
-  def inform(answer, user)
+  def send_mail(answer, user)
     @answer = answer
+    @question = answer.question
 
-    mail to: user.email
+    mail to: user.email,
+         subject: "User #{user.email} just answered your question: #{@question.title}"
   end
 end

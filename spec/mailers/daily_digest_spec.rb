@@ -1,18 +1,20 @@
 require "rails_helper"
 
 RSpec.describe DailyDigestMailer, type: :mailer do
-  describe "digest" do
-    let(:mail) { DailyDigestMailer.digest }
+  describe 'digest' do
+    let(:user) { create :user }
+    let(:mail) { DailyDigestMailer.digest(user) }
+    let!(:old_questions) { create_list :question, 2, user: user, title: 'Old question',  created_at: Date.yesterday }
+    let!(:now_questions) { create_list :question, 2, user: user, title: 'Today question', created_at: Date.today }
 
-    it "renders the headers" do
-      expect(mail.subject).to eq("Digest")
-      expect(mail.to).to eq(["to@example.org"])
-      expect(mail.from).to eq(["from@example.com"])
+    it 'prepares emails' do
+      expect(mail.subject).to eq 'Yesterday questions from QnA'
+      expect(mail.to).to eq [user.email]
     end
 
-    it "renders the body" do
-      expect(mail.body.encoded).to match("Hi")
+    it 'prepares only yesterday questions' do
+      expect(mail.body.encoded).to match(old_questions.last.title)
+      expect(mail.body.encoded).to_not match(now_questions.last.title)
     end
   end
-
 end
