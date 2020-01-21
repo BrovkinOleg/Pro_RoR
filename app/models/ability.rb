@@ -19,7 +19,8 @@ class Ability
     guest_abilities
 
     can :read, [Profit]
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscriber]
+    can :destroy, Subscriber, id: user.id
 
     can [:update, :destroy], [Question, Answer] do |resource|
       user.author?(resource)

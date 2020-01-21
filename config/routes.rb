@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :subscribers, only: %i[create destroy], shallow: true
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: :index do
