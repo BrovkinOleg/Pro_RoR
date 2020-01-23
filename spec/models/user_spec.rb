@@ -79,12 +79,24 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'subscribe?' do
+  describe 'subscribed?' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
 
-    it 'find subscriber for user' do
-      expect(user.subscribe?(question)).to be true
+    subject { user.subscribed?(question) }
+    it 'user has subscription for question' do
+      is_expected.to be_truthy
+    end
+  end
+
+  describe 'not subscribed?' do
+    let(:user) { create(:user) }
+    let(:new_user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    subject { new_user.subscribed?(question) }
+    it 'user has not subscription for question' do
+      is_expected.to be_falsey
     end
   end
 end

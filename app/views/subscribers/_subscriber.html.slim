@@ -1,4 +1,4 @@
-- if current_user&.subscribe?(question)
+- if current_user&.subscribed?(question)
   -if can? :destroy, Subscriber
     = button_to 'unsubscribe!', subscriber_path(current_user.find_subscriber), remote: true, method: :delete
 - else

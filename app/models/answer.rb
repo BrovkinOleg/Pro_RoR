@@ -13,7 +13,7 @@ class Answer < ApplicationRecord
 
   default_scope { order(best: :desc).order(:created_at) }
 
-  after_create :send_email
+  after_create :send_inform_email
 
   def best_answer!
     transaction do
@@ -25,7 +25,7 @@ class Answer < ApplicationRecord
 
   private
 
-  def send_email
+  def send_inform_email
     NotifyNewAnswerJob.perform_later(self)
   end
 end

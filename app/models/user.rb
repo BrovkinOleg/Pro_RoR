@@ -35,10 +35,10 @@ class User < ApplicationRecord
   end
 
   def find_subscriber
-    Subscriber.find_by(user_id: id)
+    Subscriber.find_by(user_id: self.id)
   end
 
-  def subscribe?(question)
-    subscribers.where(question_id: question.id).exists?
+  def subscribed?(question)
+    subscribers.exists?(question: question)
   end
 end

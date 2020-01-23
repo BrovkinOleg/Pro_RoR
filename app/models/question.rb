@@ -10,7 +10,7 @@ class Question < ApplicationRecord
 
   belongs_to :user
 
-  after_create :create_subscriber
+  after_create :create_subscribe!
 
   has_many_attached :files
 
@@ -20,7 +20,7 @@ class Question < ApplicationRecord
 
   private
 
-  def create_subscriber
+  def create_subscribe!
     subscribers.create!(user: user)
   end
 end

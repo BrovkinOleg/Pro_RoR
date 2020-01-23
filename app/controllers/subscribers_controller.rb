@@ -9,7 +9,8 @@ class SubscribersController < ApplicationController
   end
 
   def destroy
-    @subscriber = Subscriber.find(params[:id]).destroy
+    @subscriber = Subscriber.find(params[:id])
+    @subscriber.destroy
   end
 
   private

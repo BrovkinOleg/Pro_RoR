@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe NotifyNewAnswerJob, type: :job do
-  let(:question_author) { create(:user) }
-  let(:question) { create(:question, user: question_author) }
-  let(:answer) { create(:answer, question: question, user: question_author) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, question: question, user: user) }
   let(:subscriber) { create(:subscriber, question: question) }
 
   it 'must inform author and subscribers for new answer' do
