@@ -12,6 +12,7 @@ RSpec.describe SubscribersController, type: :controller do
 
       it 'saves a new subscriber in the database' do
         expect { post :create, params: { question_id: question }, format: :js }.to change(Subscriber, :count).by(1)
+        expect(response).to render_template :create
       end
     end
 
@@ -33,6 +34,7 @@ RSpec.describe SubscribersController, type: :controller do
 
       it 'delete the subscriber' do
         expect { delete :destroy, params: { id: user.find_subscriber }, format: :js }.to change(Subscriber, :count).by(-1)
+        expect(response).to render_template :destroy
       end
     end
 
