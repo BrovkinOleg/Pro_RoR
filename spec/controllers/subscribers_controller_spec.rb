@@ -33,18 +33,18 @@ RSpec.describe SubscribersController, type: :controller do
       before { sign_in(user) }
 
       it 'delete the subscriber' do
-        expect { delete :destroy, params: { id: user.find_subscriber }, format: :js }.to change(Subscriber, :count).by(-1)
+        expect { delete :destroy, params: { id: user.find_subscriber(question) }, format: :js }.to change(Subscriber, :count).by(-1)
         expect(response).to render_template :destroy
       end
     end
 
     context 'for unauthenticated user' do
       it 'does not delete subscriber' do
-        expect { delete :destroy, params: { id: user.find_subscriber }, format: :js }.to_not change(Subscriber, :count)
+        expect { delete :destroy, params: { id: user.find_subscriber(question) }, format: :js }.to_not change(Subscriber, :count)
       end
 
       it 'returns 401 status' do
-        delete :destroy, params: { id: user.find_subscriber }, format: :js
+        delete :destroy, params: { id: user.find_subscriber(question) }, format: :js
         expect(response.status).to eq 401
       end
     end

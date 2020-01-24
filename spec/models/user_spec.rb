@@ -75,7 +75,7 @@ RSpec.describe User, type: :model do
     let(:question) { create(:question, user: user) }
 
     it 'find subscriber for user' do
-      expect(user.find_subscriber).to eq user.subscribers.first
+      expect(user.find_subscriber(question)).to eq user.subscribers.first
     end
   end
 
