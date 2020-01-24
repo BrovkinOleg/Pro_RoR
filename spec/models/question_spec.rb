@@ -23,4 +23,14 @@ RSpec.describe Question, type: :model do
   it 'have many attached file' do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
+
+  describe 'create_subscribe!' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    it 'create subscribe after create question' do
+      expect(question.subscribers.exists?).to eq true
+      expect(user.subscribers.exists?).to eq true
+    end
+  end
 end

@@ -34,8 +34,8 @@ class User < ApplicationRecord
     self.id == object.user_id
   end
 
-  def find_subscriber
-    Subscriber.find_by(user_id: self.id)
+  def find_subscriber(question)
+    Subscriber.find_by(question_id: question)
   end
 
   def subscribed?(question)

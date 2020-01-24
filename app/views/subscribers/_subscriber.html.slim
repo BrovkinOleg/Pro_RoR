@@ -1,6 +1,6 @@
 - if current_user&.subscribed?(question)
   -if can? :destroy, Subscriber
-    = button_to 'unsubscribe!', subscriber_path(current_user.find_subscriber), remote: true, method: :delete
+    = button_to 'unsubscribe!', subscriber_path(current_user.find_subscriber(question)), remote: true, method: :delete
 - else
   -if can? :create, Subscriber
-    = button_to 'subscribe!', subscribers_path, method: :post, remote: true, params: { question_id: question.id }
+    = button_to 'subscribe!', question_subscribers_path(question), method: :post, remote: true, params: { question_id: question.id }

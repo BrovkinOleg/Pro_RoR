@@ -25,9 +25,8 @@ Rails.application.routes.draw do
       resources :comments, only: :create, defaults: { commentable: 'answers' }
       patch "best_answer", on: :member, as: :best
     end
+    resources :subscribers, only: %i[create destroy], shallow: true
   end
-
-  resources :subscribers, only: %i[create destroy], shallow: true
 
   namespace :api do
     namespace :v1 do
