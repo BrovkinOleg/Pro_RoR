@@ -83,9 +83,9 @@ RSpec.describe User, type: :model do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
 
-    subject { user.subscribed?(question) }
+    subject { user }
     it 'user has subscription for question' do
-      is_expected.to be_truthy
+      is_expected.to be_subscribed(question)
     end
   end
 
@@ -94,9 +94,9 @@ RSpec.describe User, type: :model do
     let(:new_user) { create(:user) }
     let(:question) { create(:question, user: user) }
 
-    subject { new_user.subscribed?(question) }
+    subject { new_user }
     it 'user has not subscription for question' do
-      is_expected.to be_falsey
+      is_expected.to_not be_subscribed(question)
     end
   end
 end
