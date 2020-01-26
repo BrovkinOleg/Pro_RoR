@@ -28,7 +28,7 @@ RSpec.describe Question, type: :model do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     it 'create subscribe after create question' do
-      expect(question.subscribers.first.user_id).to eq user.id
+      expect(question.subscribers.first.user).to eq user
     end
   end
 end
