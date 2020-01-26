@@ -36,3 +36,5 @@ yarn-debug.log*
 /vendor/cache
 /app/assets/images
 config/local_env.yml
+/db/sphinx
+/config/*.sphinx.conf
