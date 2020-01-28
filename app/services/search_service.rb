@@ -1,5 +1,5 @@
 class SearchService
-  SCOPES = %w[Questions Answers Comments Users]
+  SCOPES = %w[Questions Answers Comments Users].freeze
 
   def self.call(query, scope = nil)
     klass = ThinkingSphinx
