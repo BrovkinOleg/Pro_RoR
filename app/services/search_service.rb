@@ -1,9 +1,10 @@
 class SearchService
+  SCOPES = %w[Question Answer Comment User].freeze
 
-  RESOURCES = %w[Question Answer Comment User]
+  def self.call(query, scope = nil)
+    klass = ThinkingSphinx
+    klass = scope.classify.constantize if SCOPES.include?(scope)
 
-  def self.call(query:, resource: nil)
-    klass = RESOURCES.include?(resource) ? resource.constantize : ThinkingSphinx
     escaped_query = ThinkingSphinx::Query.escape(query)
     klass.search escaped_query
   end

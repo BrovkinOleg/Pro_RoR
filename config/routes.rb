@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/search', to: 'search#search'
+
   resources :questions, concerns: :votable do
     resources :comments, only: :create, defaults: { commentable: 'questions' }
     resources :answers, concerns: :votable, shallow: true, except: [:index] do
