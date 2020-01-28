@@ -4,7 +4,6 @@ class SearchService
   def self.call(query, scope = nil)
     klass = ThinkingSphinx
     klass = scope.singularize.classify.constantize if SCOPES.include?(scope)
-
     escaped_query = ThinkingSphinx::Query.escape(query)
     klass.search escaped_query
   end
