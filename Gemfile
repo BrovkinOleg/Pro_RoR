@@ -53,6 +53,7 @@ gem 'whenever', require: false
 gem 'mysql2', '0.4.9'
 gem 'thinking-sphinx'
 gem 'database_cleaner'
+gem 'mini_racer'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
