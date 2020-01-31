@@ -38,3 +38,4 @@ yarn-debug.log*
 config/local_env.yml
 /db/sphinx
 /config/*.sphinx.conf
+/public/deploy.txt
