@@ -13,7 +13,7 @@ class Answer < ApplicationRecord
 
   default_scope { order(best: :desc).order(:created_at) }
 
-  after_create :send_inform_email
+  after_commit :send_inform_email, on: :create
 
   def best_answer!
     transaction do
