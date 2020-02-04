@@ -13,6 +13,11 @@
 #   rake "some:great:rake:task"
 # end
 #
+
+every :reboot do
+  rake "ts:start"
+end
+
 every 1.days do
   runner 'DailyDigestService.send_digest'
 end
