@@ -19,7 +19,7 @@ every :reboot do
 end
 
 every 1.days do
-  runner 'DailyDigestService.send_digest'
+  runner 'DailyDigestService.new.send_digest'
 end
 
 every 30.minutes do
