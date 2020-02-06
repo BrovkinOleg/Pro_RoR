@@ -21,6 +21,8 @@ module Qna
 
     config.active_job.queue_adapter = :sidekiq
 
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
+
     config.autoload_paths += [config.root.join('app')]
 
     # Settings in config/environments/* take precedence over those specified here.
