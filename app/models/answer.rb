@@ -4,7 +4,7 @@ class Answer < ApplicationRecord
   include Votable
   include HasComments
 
-  belongs_to :question
+  belongs_to :question, touch: true
   belongs_to :user
 
   has_many_attached :files
