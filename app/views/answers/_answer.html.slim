@@ -1,47 +1,47 @@
+- cache [answer, current_user]
+  div id = "answer_#{answer.id}"
+    p = answer.body
+    div id = "comments_answer_#{answer.id}"
+      = render answer.comments
+      = render 'comments/form', commentable: answer
 
-div id = "answer_#{answer.id}"
-  p = answer.body
-  div id = "comments_answer_#{answer.id}"
-    = render answer.comments
-    = render 'comments/form', commentable: answer
+    - if answer.best?
+      h4 = 'This answer is the best!'
 
-  - if answer.best?
-    h4 = 'This answer is the best!'
+    b Answer Vote
 
-  b Answer Vote
+    - if can? :vote_up, answer
+      = render 'shared/votes', resource: answer
 
-  - if can? :vote_up, answer
-    = render 'shared/votes', resource: answer
+    .links
+      = render 'shared/attached_links', resource: answer
 
-  .links
-    = render 'shared/attached_links', resource: answer
+    - if can? :update, answer
+      table
+        tr
+          td = link_to 'Delete', answer_path(answer), id: "delete-answer_#{answer.id}", \
+               remote: true, method: :delete
+          td = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-  - if can? :update, answer
-    table
-      tr
-        td = link_to 'Delete', answer_path(answer), id: "delete-answer_#{answer.id}", \
-             remote: true, method: :delete
-        td = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+          - if can? :best_answer, answer
+            - if !answer.best?
+              td = link_to 'Best answer', best_answer_path(answer), method: :patch, remote: true
 
-        - if can? :best_answer, answer
-          - if !answer.best?
-            td = link_to 'Best answer', best_answer_path(answer), method: :patch, remote: true
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+      p
+        = f.label :body, 'Body_Edit'
+        = f.text_area :body
+      p
+        = render 'shared/attached_files', resource: answer
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
 
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-    p
-      = f.label :body, 'Body_Edit'
-      = f.text_area :body
-    p
-      = render 'shared/attached_files', resource: answer
-    p
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
-
-    .edit_links
-      = f.fields_for :links do |l|
-        = render 'shared/link_fields', f: l
-      .add_links
-        = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
-    p
-      = f.submit 'Save'
-  hr
+      .edit_links
+        = f.fields_for :links do |l|
+          = render 'shared/link_fields', f: l
+        .add_links
+          = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+      p
+        = f.submit 'Save'
+    hr

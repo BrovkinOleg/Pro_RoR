@@ -1,38 +1,39 @@
-= render 'shared/errors', local: true, remote: true, resource: @question
+- cache [@question, current_user]
+  = render 'shared/errors', local: true, remote: true, resource: @question
 
-.subscribers
-  = render 'subscribers/subscriber', question: @question
+  .subscribers
+    = render 'subscribers/subscriber', question: @question
 
-.profits
-  = render 'profits/profit', profit: @question.profit if @question.profit
+  .profits
+    = render 'profits/profit', profit: @question.profit if @question.profit
 
-div id = "question_#{@question.id}"
-  h2 = @question.title
-  h3 = @question.body
-  div id = "comments_question_#{@question.id}"
-    = render @question.comments
-    = render 'comments/form', commentable: @question
+  div id = "question_#{@question.id}"
+    h2 = @question.title
+    h3 = @question.body
+    div id = "comments_question_#{@question.id}"
+      = render @question.comments
+      = render 'comments/form', commentable: @question
 
-= render 'shared/attached_files', resource: @question
+  = render 'shared/attached_files', resource: @question
 
-- if can? :destroy, @question
-  = link_to 'Delete question', question_path(@question), method: :delete
+  - if can? :destroy, @question
+    = link_to 'Delete question', question_path(@question), method: :delete
 
-.links
-  = render 'shared/attached_links', resource: @question
+  .links
+    = render 'shared/attached_links', resource: @question
 
-hr
-.answers
-  = render @question.answers
+  hr
+  .answers
+    = render @question.answers
 
-.answer-errors
-  = render 'shared/errors', resource: @answer
-hr
+  .answer-errors
+    = render 'shared/errors', resource: @answer
+  hr
 
-- if can?(:create, Question)
-  = render 'questions/form'
-- else
-  | Sign_in or Sign_up if you want to leave an answer
+  - if can?(:create, Question)
+    = render 'questions/form'
+  - else
+    | Sign_in or Sign_up if you want to leave an answer
 
 p = link_to 'Back', root_path
 p = render 'shared/footer', local: true

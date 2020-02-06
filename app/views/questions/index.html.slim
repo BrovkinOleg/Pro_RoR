@@ -1,9 +1,12 @@
+
+
 - if can?(:create, Question)
   p = link_to 'Ask new question', new_question_path
 
 hr
-.questions
-  = render @questions
+- cache [@question, current_user]
+  .questions
+    = render @questions
 
 .question-errors
   = render 'shared/errors', local: true, resource: @question
