@@ -1,13 +1,12 @@
 
-- cache [@question, current_user]
-  - if can?(:create, Question)
-    p = link_to 'Ask new question', new_question_path
+- if can?(:create, Question)
+  p = link_to 'Ask new question', new_question_path
 
-  .questions
-    = render @questions
+.questions
+  = render @questions
 
-  hr
-  .question-errors
-    = render 'shared/errors', local: true, resource: @question
+hr
+.question-errors
+  = render 'shared/errors', local: true, resource: @question
 
-  p = render 'shared/footer'
+p = render 'shared/footer'

@@ -1,4 +1,4 @@
-
-= profit.name
-- if profit.image.attached?
-  = image_tag url_for(profit.image)
+- cache profit do
+  = profit.name
+  - if profit.image.attached?
+    = image_tag url_for(profit.image)
