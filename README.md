@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Этот проект был разработан во время прохождения обучения на курсах 
+Rails_ProFessional (сайт Thinknetica: https://thinknetica.com)
+Мой отзыв о данном курсе https://rubycourses.ru/user/29189
 
-Things you may want to cover:
+В данном проекте под руководством менторов был разработан сайт, 
+где-то повторяющий функционал https://stackoverflow.com
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Во время прохождения 20-ти уроков был использован подход TDD_BDD.
+Для разработки использовалась IDE RubyMine.
